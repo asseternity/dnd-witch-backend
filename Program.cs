@@ -6,11 +6,21 @@
 // adjectives, etc - madlibs style)
 // 3) when generating a character, it has a 15% chance to add a random + or - 1-3 bonus or penalty to each attribute rolled (min 3)
 
+using System.Reflection;
 using System.Text.Json.Nodes;
 using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using Telegram.Bot;
+using Telegram.Bot.Polling;
+using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddSingleton<ITelegramBotClient>(
+    new TelegramBotClient(Environment.GetEnvironmentVariable("TELEGRAM_TOKEN"))
+);
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
@@ -19,6 +29,9 @@ builder.Services.AddSwaggerGen();
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 builder.WebHost.UseUrls($"http://*:{port}");
 var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+app.MapControllers();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -408,6 +421,90 @@ app.MapGet(
     }
 );
 
+// Telegram bot
+// Start Telegram bot long-polling
+var botClient = app.Services.GetRequiredService<ITelegramBotClient>();
+
+// CancellationToken for clean shutdown
+var cts = new CancellationTokenSource();
+
+// Receiver options
+var receiverOptions = new Telegram.Bot.Polling.ReceiverOptions
+{
+    AllowedUpdates = { } // receive all update types
+};
+
+// Start receiving
+botClient.StartReceiving(
+    updateHandler: async (ITelegramBotClient bot, Update update, CancellationToken token) =>
+    {
+        try
+        {
+            if (update?.Message?.Text != null)
+            {
+                string incoming = update.Message.Text.Trim();
+
+                string response = "The Witch does not abide by this command.";
+
+                // ----- Dice rolling -----
+                if (incoming.StartsWith("/r") || incoming.StartsWith("/"))
+                {
+                    string diceCode = incoming.StartsWith("/r")
+                        ? incoming.Substring(2)
+                        : incoming.Substring(1);
+
+                    try
+                    {
+                        var parsed = ParseDiceCode(diceCode);
+                        Random rnd = new Random();
+                        List<int> rolls = new List<int>();
+                        for (int i = 0; i < parsed[0]; i++)
+                        {
+                            rolls.Add(rnd.Next(1, parsed[1] + 1));
+                        }
+                        rolls = rolls.OrderByDescending(x => x).ToList();
+                        int sum = rolls.Sum();
+                        response =
+                            rolls.Count > 1
+                                ? $"{string.Join(", ", rolls)} | Total: {sum}"
+                                : $"{string.Join(", ", rolls)}";
+                    }
+                    catch
+                    {
+                        response = "Invalid dice code. Use /NdM, e.g., /1d20";
+                    }
+                }
+                // ----- Character generator -----
+                else if (incoming.Equals("/char", StringComparison.OrdinalIgnoreCase))
+                {
+                    response = GenerateCharacter(false);
+                }
+                else if (incoming.Equals("/leordischar", StringComparison.OrdinalIgnoreCase))
+                {
+                    response = GenerateCharacter(true);
+                }
+
+                await bot.SendMessage(
+                    chatId: update.Message.Chat.Id,
+                    text: response,
+                    cancellationToken: token
+                );
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error processing update: {ex.Message}");
+        }
+    },
+    errorHandler: async (ITelegramBotClient bot, Exception ex, CancellationToken token) =>
+    {
+        Console.WriteLine($"Telegram error: {ex.Message}");
+        await Task.CompletedTask;
+    },
+    receiverOptions: receiverOptions,
+    cancellationToken: cts.Token
+);
+
 app.Run();
 
 // [v] add height and weight - varied by races
@@ -415,7 +512,7 @@ app.Run();
 // [v] a /LeordisChar route with a nation, and a "take on Whetu's Collision"
 // [v] rethink - what is fun and good for creativity and what isn't (is the motto fun? is alignment?)
 // [v] make a TG bot
-// [_] publish on Railway
+// [v] publish on Railway
 // [_] connect backend to TG
 // [_] add descriptions and commands to both bots
 // [_] include + and - bonuses to dice code parser
