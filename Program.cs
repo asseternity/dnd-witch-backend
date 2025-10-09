@@ -412,5 +412,8 @@ app.Run();
 // [v] add MBTI type
 // [v] a /LeordisChar route with a nation, and a "take on Whetu's Collision"
 // [v] rethink - what is fun and good for creativity and what isn't (is the motto fun? is alignment?)
-// [_] make a TG bot
+// [v] make a TG bot
 // [_] publish on Railway
+// [_] connect backend to TG
+// [_] add descriptions and commands to both bots
+// [_] include + and - bonuses to dice code parser
