@@ -8,6 +8,7 @@
 
 using System.Reflection;
 using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Telegram.Bot;
@@ -67,21 +68,82 @@ app.MapGet(
 );
 
 // ------ dice rolling ------
-List<int> ParseDiceCode(string code)
+List<DicePart> ParseDiceCode(string code)
 {
-    int howManyDice = 0;
-    int whatSidedDice = 0;
-    string[] codeElements = code.Split('d', 'D');
-    howManyDice = int.Parse(codeElements[0]);
-    whatSidedDice = int.Parse(codeElements[1]);
-    if (howManyDice > 0 && whatSidedDice > 0)
+    var parts = new List<DicePart>();
+    // Split input by + or - keeping the sign
+    var matches = Regex.Matches(code, @"([+-]?[^+-]+)");
+
+    foreach (Match match in matches)
     {
-        return new List<int> { howManyDice, whatSidedDice };
+        string part = match.Value.Trim();
+
+        if (string.IsNullOrEmpty(part))
+            continue;
+
+        int sign = 1;
+        if (part.StartsWith("+"))
+        {
+            part = part.Substring(1);
+        }
+        else if (part.StartsWith("-"))
+        {
+            sign = -1;
+            part = part.Substring(1);
+        }
+
+        if (part.Contains("d") || part.Contains("D"))
+        {
+            string[] diceElements = part.Split('d', 'D');
+            int count = int.Parse(diceElements[0]) * sign;
+            int sides = int.Parse(diceElements[1]);
+            parts.Add(new DicePart { Count = count, Sides = sides });
+        }
+        else
+        {
+            int modifier = int.Parse(part) * sign;
+            parts.Add(new DicePart { Modifier = modifier });
+        }
     }
-    else
+
+    return parts;
+}
+
+string RollDice(List<DicePart> parts)
+{
+    Random rnd = new Random();
+    var rolls = new List<int>();
+    int modifierTotal = 0;
+
+    foreach (var part in parts)
     {
-        return null;
+        if (part.IsDice)
+        {
+            for (int i = 0; i < Math.Abs(part.Count); i++)
+            {
+                int roll = rnd.Next(1, part.Sides + 1);
+                rolls.Add((part.Count > 0) ? roll : -roll);
+            }
+        }
+        else
+        {
+            modifierTotal += part.Modifier;
+        }
     }
+
+    rolls.Sort((a, b) => b.CompareTo(a)); // descending
+    int total = rolls.Sum() + modifierTotal;
+
+    // Special case: one die, no modifiers
+    if (rolls.Count == 1 && modifierTotal == 0)
+    {
+        return $"You rolled: {rolls[0]}";
+    }
+
+    string rollsStr = string.Join(", ", rolls);
+    string modifierStr = (modifierTotal >= 0) ? $"+{modifierTotal}" : modifierTotal.ToString();
+
+    return $"Total: {total} | Rolls: {rollsStr} | Modifier: {modifierStr}";
 }
 
 app.MapGet(
@@ -90,27 +152,13 @@ app.MapGet(
     {
         if (diceCode != "")
         {
-            List<int> parsed = ParseDiceCode(diceCode);
+            List<DicePart> parsed = ParseDiceCode(diceCode);
             if (parsed == null)
                 return Results.BadRequest();
-            Random rnd = new Random();
-            List<int> rolls = new List<int>();
-            for (int i = 0; i < parsed[0]; i++)
-            {
-                rolls.Add(rnd.Next(1, parsed[1] + 1));
-            }
-            rolls = rolls.OrderByDescending(x => x).ToList();
-            int sum = rolls.Sum(x => x);
-            string result = String.Join(", ", rolls.ToArray());
-            if (rolls.Count > 1)
-            {
-                result = result + " | Total: " + sum.ToString();
-                return Results.Ok(result);
-            }
-            else
-            {
-                return Results.Ok(result);
-            }
+            string result = RollDice(parsed);
+            if (result == null)
+                return Results.BadRequest();
+            return Results.Ok(result);
         }
         else
         {
@@ -452,19 +500,9 @@ botClient.StartReceiving(
 
                     try
                     {
-                        var parsed = ParseDiceCode(diceCode);
-                        Random rnd = new Random();
-                        List<int> rolls = new List<int>();
-                        for (int i = 0; i < parsed[0]; i++)
-                        {
-                            rolls.Add(rnd.Next(1, parsed[1] + 1));
-                        }
-                        rolls = rolls.OrderByDescending(x => x).ToList();
-                        int sum = rolls.Sum();
-                        response =
-                            rolls.Count > 1
-                                ? $"{string.Join(", ", rolls)} | Total: {sum}"
-                                : $"{string.Join(", ", rolls)}";
+                        List<DicePart> parsed = ParseDiceCode(diceCode);
+                        string result = RollDice(parsed);
+                        response = result;
                     }
                     catch
                     {
@@ -510,6 +548,6 @@ app.Run();
 // [v] rethink - what is fun and good for creativity and what isn't (is the motto fun? is alignment?)
 // [v] make a TG bot
 // [v] publish on Railway
+// [v] add descriptions and commands to both bots
+// [v] include + and - bonuses to dice code parser
 // [_] connect backend to TG
-// [_] add descriptions and commands to both bots
-// [_] include + and - bonuses to dice code parser
