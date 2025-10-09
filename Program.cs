@@ -71,38 +71,41 @@ app.MapGet(
 List<DicePart> ParseDiceCode(string code)
 {
     var parts = new List<DicePart>();
-    // Split input by + or - keeping the sign
     var matches = Regex.Matches(code, @"([+-]?[^+-]+)");
 
     foreach (Match match in matches)
     {
         string part = match.Value.Trim();
-
         if (string.IsNullOrEmpty(part))
             continue;
 
         int sign = 1;
         if (part.StartsWith("+"))
-        {
             part = part.Substring(1);
-        }
         else if (part.StartsWith("-"))
         {
             sign = -1;
             part = part.Substring(1);
         }
 
-        if (part.Contains("d") || part.Contains("D"))
+        try
         {
-            string[] diceElements = part.Split('d', 'D');
-            int count = int.Parse(diceElements[0]) * sign;
-            int sides = int.Parse(diceElements[1]);
-            parts.Add(new DicePart { Count = count, Sides = sides });
+            if (part.Contains("d") || part.Contains("D"))
+            {
+                string[] diceElements = part.Split('d', 'D');
+                int count = int.Parse(diceElements[0]) * sign;
+                int sides = int.Parse(diceElements[1]);
+                parts.Add(new DicePart { Count = count, Sides = sides });
+            }
+            else
+            {
+                int modifier = int.Parse(part) * sign;
+                parts.Add(new DicePart { Modifier = modifier });
+            }
         }
-        else
+        catch
         {
-            int modifier = int.Parse(part) * sign;
-            parts.Add(new DicePart { Modifier = modifier });
+            // invalid part, ignore
         }
     }
 
