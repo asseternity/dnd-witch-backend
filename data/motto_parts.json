@@ -1,0 +1,45 @@
+{
+  "beginnings": [
+    "Always", "Never", "Sometimes", "Only", "Whenever", "In life", "With courage", "Through adversity", 
+    "Against all odds", "On good days", "When in doubt", "Under pressure", "At sunrise", "After midnight", 
+    "During chaos", "While laughing", "In the rain", "Under the stars", "Beyond fear", "Between dreams", 
+    "At full speed", "Without hesitation", "From the heart", "On the edge", "When no one’s watching", 
+    "At your own pace", "While dancing", "When the world sleeps", "Through storm and calm", "In silence", 
+    "On a whim", "While smiling", "Over coffee", "In small moments", "During the journey", "In the wild", 
+    "Under fire", "When it matters most", "In every breath", "At the finish line", "After failure", 
+    "In good company", "With open arms", "When you feel lost", "At first light", "While dreaming", 
+    "On the horizon", "Before it’s too late", "At full volume", "When nobody believes"
+  ],
+  "middles": [
+    "seek", "cherish", "fight for", "embrace", "question", "protect", "value", "pursue", 
+    "laugh at", "build", "destroy", "dance with", "defend", "paint", "rewrite", "ignite", 
+    "challenge", "trust", "celebrate", "discover", "remember", "forget", "shape", "explore", 
+    "create", "break", "tame", "uncover", "push", "lift", "honor", "stretch", 
+    "reinvent", "jump into", "dream of", "play with", "nurture", "chase", "balance", "question twice", 
+    "turn toward", "believe in", "roar for", "run with", "taste", "build up", "sing about", "lean into", 
+    "ride the wave of", "light up"
+  ],
+  "objects": [
+    "honor", "freedom", "knowledge", "love", "justice", "adventure", "truth", "peace", 
+    "chaos", "dreams", "hope", "curiosity", "the unknown", "tomorrow", "the moment", "imagination", 
+    "possibility", "madness", "magic", "failure", "growth", "potential", "serendipity", "fun", 
+    "laughter", "change", "destiny", "creation", "balance", "curves", "art", "the climb", 
+    "music", "stories", "the spark", "your path", "the journey", "the wild", "the unexpected", "your fire", 
+    "humility", "the impossible", "your weirdness", "the horizon", "kindness", "the chaos within", 
+    "truth and tacos", "cosmic luck", "your inner rebel", "second chances", "your vibe", "the good trouble"
+  ],
+  "endings": [
+    "with all your heart", "without fear", "at every turn", "every day", "forever", "with kindness", 
+    "until the end", "with passion", "like no one’s watching", "as if it’s art", "before coffee runs out", 
+    "as if you meant it", "like a legend", "with messy joy", "in your own way", "under the moonlight", 
+    "with a grin", "until you fall over laughing", "like it’s the last song", "while it rains glitter", 
+    "as if you’re on fire", "without looking back", "with reckless hope", "until you get it right", 
+    "like a hero in sneakers", "as if time stopped", "with gentle chaos", "before the curtain falls", 
+    "with your heart open", "as if no one told you no", "in full color", "until the stars fade", 
+    "like it’s easy", "while dancing badly", "without an apology", "in technicolor", "until sunrise", 
+    "with sparkle and caffeine", "like a thunderstorm", "until you run out of breath", "while singing off-key", 
+    "with pockets full of dreams", "like you mean business", "in neon lights", "without a map", 
+    "until you surprise yourself", "like it’s your birthday", "before gravity wins", "with cosmic laughter", 
+    "in total awe", "as if magic’s real"
+  ]
+}

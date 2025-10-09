@@ -1,0 +1,6 @@
+@dnd_witch_backend_HostAddress = http://localhost:5064
+
+GET {{dnd_witch_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

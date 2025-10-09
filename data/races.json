@@ -1,0 +1,90 @@
+{
+  "races": {
+    "Dragonborn": [],
+    "Dwarf": [
+      "Hill Dwarf",
+      "Mountain Dwarf",
+      "Duergar"
+    ],
+    "Elf": [
+      "High Elf",
+      "Wood Elf",
+      "Dark Elf (Drow)",
+      "Eladrin",
+      "Sea Elf",
+      "Shadar-Kai"
+    ],
+    "Gnome": [
+      "Forest Gnome",
+      "Rock Gnome",
+      "Deep Gnome (Svirfneblin)"
+    ],
+    "Half-Elf": [],
+    "Half-Orc": [],
+    "Halfling": [
+      "Lightfoot",
+      "Stout",
+      "Ghostwise"
+    ],
+    "Human": [
+      "Standard Human",
+      "Variant Human"
+    ],
+    "Tiefling": [
+      "Asmodeus Tiefling",
+      "Baalzebul Tiefling",
+      "Dispater Tiefling",
+      "Fierna Tiefling",
+      "Glasya Tiefling",
+      "Levistus Tiefling",
+      "Mammon Tiefling",
+      "Mephistopheles Tiefling",
+      "Zariel Tiefling"
+    ],
+    "Aarakocra": [],
+    "Aasimar": [
+      "Protector",
+      "Scourge",
+      "Fallen"
+    ],
+    "Duergar": [],
+    "Fairy": [],
+    "Firbolg": [],
+    "Genasi": [
+      "Air",
+      "Earth",
+      "Fire",
+      "Water"
+    ],
+    "Gith": [
+      "Githyanki",
+      "Githzerai"
+    ],
+    "Goliath": [],
+    "Qudanti": [],
+    "Kenku": [],
+    "Satyr": [],
+    "Tabaxi": [],
+    "Tortle": [],
+    "Triton": [],
+    "Bugbear": [],
+    "Centaur": [],
+    "Goblin": [],
+    "Grung": [],
+    "Hobgoblin": [],
+    "Kobold": [],
+    "Lizardfolk": [],
+    "Minotaur": [],
+    "Orc": [],
+    "Yuan-Ti": [
+      "Pureblood",
+      "Malison",
+      "Abomination"
+    ],
+    "Warforged": [
+      "Envoy",
+      "Juggernaut",
+      "Skirmisher"
+    ]
+  }
+}

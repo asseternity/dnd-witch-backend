@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "6LQRTLiRQ95u3o7rh2CiGXxqj5D14Z9Ir0u7bGOzXPI=",
+  "Source": "dnd-witch-backend",
+  "BasePath": "_content/dnd-witch-backend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

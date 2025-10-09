@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\dnd-witch-backend.props" />
+</Project>

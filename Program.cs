@@ -1,0 +1,333 @@
+// this dnd bot needs to:
+// 1) roll any dice code you send it, like /1d20 or /5d6, etc.
+// 2) generate a character with a random name, class, ability score array, background
+// (i'll use a string list with a thousand different random professions), alignment,
+// starting feat, and a personal motto (piecemeal generated from three string lists with verbs, nouns,
+// adjectives, etc - madlibs style)
+// 3) when generating a character, it has a 15% chance to add a random + or - 1-3 bonus or penalty to each attribute rolled (min 3)
+
+using System.Text.Json.Nodes;
+using Newtonsoft.Json.Linq;
+using Swashbuckle.AspNetCore.SwaggerUI;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+app.UseHttpsRedirection();
+
+// ------ attributes array ------
+List<int> ProduceAttributeArray()
+{
+    List<int> attributes = new List<int>();
+    Random rnd = new Random();
+    for (int i = 0; i < 6; i++)
+    {
+        List<int> rolls = new List<int>();
+        for (int j = 0; j < 4; j++)
+        {
+            rolls.Add(rnd.Next(1, 7));
+        }
+        rolls = rolls.OrderBy(x => x).ToList();
+        rolls.RemoveAt(0);
+        int sum = rolls.Sum(x => x);
+        attributes.Add(sum);
+    }
+    return attributes;
+}
+
+app.MapGet(
+    "/attributes",
+    () =>
+    {
+        return Results.Ok(String.Join(", ", ProduceAttributeArray()));
+    }
+);
+
+// ------ dice rolling ------
+List<int> ParseDiceCode(string code)
+{
+    int howManyDice = 0;
+    int whatSidedDice = 0;
+    string[] codeElements = code.Split('d', 'D');
+    howManyDice = int.Parse(codeElements[0]);
+    whatSidedDice = int.Parse(codeElements[1]);
+    if (howManyDice > 0 && whatSidedDice > 0)
+    {
+        return new List<int> { howManyDice, whatSidedDice };
+    }
+    else
+    {
+        return null;
+    }
+}
+
+app.MapGet(
+    "/r/{diceCode}",
+    (string diceCode) =>
+    {
+        if (diceCode != "")
+        {
+            List<int> parsed = ParseDiceCode(diceCode);
+            if (parsed == null)
+                return Results.BadRequest();
+            Random rnd = new Random();
+            List<int> rolls = new List<int>();
+            for (int i = 0; i < parsed[0]; i++)
+            {
+                rolls.Add(rnd.Next(1, parsed[1] + 1));
+            }
+            rolls = rolls.OrderByDescending(x => x).ToList();
+            int sum = rolls.Sum(x => x);
+            string result = String.Join(", ", rolls.ToArray());
+            if (rolls.Count > 1)
+            {
+                result = result + " | Total: " + sum.ToString();
+                return Results.Ok(result);
+            }
+            else
+            {
+                return Results.Ok(result);
+            }
+        }
+        else
+        {
+            return Results.BadRequest();
+        }
+    }
+);
+
+// ------ character generator ------
+// import all the jsons
+var backgroundData = JObject.Parse(File.ReadAllText("data/backgrounds.json"));
+var classData = JObject.Parse(File.ReadAllText("data/classes.json"));
+var featsData = JObject.Parse(File.ReadAllText("data/feats.json"));
+var racesData = JObject.Parse(File.ReadAllText("data/races.json"));
+var alignmentsData = JObject.Parse(File.ReadAllText("data/alignments.json"));
+
+// helper:
+// within a main field (jsons have just one top tier field),
+// pick a random upper field,
+// if it does have an inner field, pick a random one
+// return a string of both of these names
+string PickRandomUpperAndInner(JObject data)
+{
+    var rand = new Random();
+
+    // If JSON has a single wrapper like { "classes": { ... } } or { "races": { ... } }
+    JObject root = data;
+    if (root.Properties().Count() == 1 && root.Properties().First().Value is JObject singleObj)
+    {
+        root = singleObj;
+    }
+
+    // Pick random upper (e.g., "Monk", "Centaur")
+    var upperList = root.Properties().Select(p => p.Name).ToList();
+    if (upperList.Count == 0)
+        return "Unknown";
+
+    var upper = upperList[rand.Next(upperList.Count)];
+    var upperNode = root[upper];
+
+    // If upper node is an array -> subclasses/subraces stored as string array
+    if (upperNode is JArray arr && arr.Count > 0)
+    {
+        var inner = arr[rand.Next(arr.Count)].ToString();
+        return $"{upper} ({inner})";
+    }
+
+    // If upper node is an object -> pick a property name as inner
+    if (upperNode is JObject innerObj && innerObj.Properties().Any())
+    {
+        var innerList = innerObj.Properties().Select(p => p.Name).ToList();
+        var inner = innerList[rand.Next(innerList.Count)];
+        return $"{upper} ({inner})";
+    }
+
+    // No inner / empty array -> just upper
+    return upper;
+}
+
+string PickRandomFromArray(JObject data)
+{
+    var rand = new Random();
+    var firstProp = data.Properties().First();
+    var array = (JArray)firstProp.Value;
+    return array[rand.Next(array.Count)].ToString();
+}
+
+// helper function to generate attribute scores (with the above bonus / penalty)
+string ProduceFunAttributeArray()
+{
+    List<int> attributes = new List<int>();
+    Random rnd = new Random();
+    for (int i = 0; i < 6; i++)
+    {
+        List<int> rolls = new List<int>();
+        for (int j = 0; j < 4; j++)
+        {
+            rolls.Add(rnd.Next(1, 7));
+        }
+        rolls = rolls.OrderBy(x => x).ToList();
+        rolls.RemoveAt(0);
+        int sum = rolls.Sum(x => x);
+        int chance = rnd.Next(1, 101);
+        if (chance < 25)
+        {
+            int funModifier = rnd.Next(1, 5);
+            int chance2 = rnd.Next(1, 101);
+            if (chance2 < 50)
+            {
+                sum = sum + funModifier;
+            }
+            else
+            {
+                sum = sum - funModifier;
+                if (sum < 3)
+                {
+                    sum = 3;
+                }
+            }
+        }
+        attributes.Add(sum);
+    }
+    return String.Join(", ", attributes.ToArray());
+}
+
+// helper function: name generator. make a string out of random alternating consonants and vowels
+string[] LoadSuffixes(string path)
+{
+    return File.ReadAllLines(path);
+}
+
+string GenerateFullName()
+{
+    var rand = new Random();
+
+    // Consonants and vowels for random string generation
+    string consonants = "bcdfghjklmnpqrstvwxyz";
+    string vowels = "aeiou";
+    var suffixes = LoadSuffixes("data/suffixes.txt");
+
+    // Helper to generate alternating consonant-vowel strings
+    string GenerateRandomString(int length)
+    {
+        var arr = new char[length];
+        for (int i = 0; i < length; i++)
+            arr[i] =
+                (i % 2 == 0)
+                    ? consonants[rand.Next(consonants.Length)]
+                    : vowels[rand.Next(vowels.Length)];
+        arr[0] = char.ToUpper(arr[0]);
+        return new string(arr);
+    }
+
+    // First name: 2-8 letters
+    int firstNameLength = rand.Next(2, 9);
+    string firstName = GenerateRandomString(firstNameLength);
+
+    // Surname: 3-5 letters + random suffix
+    int surnameBaseLength = rand.Next(3, 6);
+    string surnameBase = GenerateRandomString(surnameBaseLength);
+    string surnameSuffix = suffixes[rand.Next(suffixes.Length)];
+    string surname = surnameBase + surnameSuffix;
+
+    return $"{firstName} {surname}";
+}
+
+// helper method to generate a piecemeal madlibs personal motto
+string GenerateMotto()
+{
+    var rand = new Random();
+
+    // Load JSON once (or cache it outside this method if calling repeatedly)
+    string json = File.ReadAllText("data/motto_parts.json");
+    var parts = JObject.Parse(json);
+
+    string beginning = parts["beginnings"]
+        .ElementAt(rand.Next(parts["beginnings"].Count()))
+        .ToString();
+    string middle = parts["middles"].ElementAt(rand.Next(parts["middles"].Count())).ToString();
+    string obj = parts["objects"].ElementAt(rand.Next(parts["objects"].Count())).ToString();
+    string ending = parts["endings"].ElementAt(rand.Next(parts["endings"].Count())).ToString();
+
+    return $"{beginning}, {middle} {obj} {ending}";
+}
+
+// main GET route
+app.MapGet(
+    "/char",
+    () =>
+    {
+        var name = GenerateFullName();
+        var motto = GenerateMotto();
+        var attributes = ProduceFunAttributeArray();
+        string class_ = PickRandomUpperAndInner(classData);
+        string race = PickRandomUpperAndInner(racesData);
+        string background = PickRandomFromArray(backgroundData);
+        string feat = PickRandomFromArray(featsData);
+        string alignment = PickRandomFromArray(alignmentsData);
+
+        string sex = "Female";
+        Random rnd = new Random();
+        int chance = rnd.Next(1, 101);
+        if (chance < 40)
+        {
+            sex = "Male";
+        }
+        else if (chance < 60)
+        {
+            sex = "Non-Binary";
+        }
+
+        List<string> allFields = new List<string>();
+        allFields.Add(class_);
+        allFields.Add(race);
+        allFields.Add(background);
+        allFields.Add(feat);
+        allFields.Add(alignment);
+        allFields.Add(sex);
+        // possibly replace some with "You choose"
+        for (int i = 0; i < allFields.Count; i++)
+        {
+            int chance2 = rnd.Next(1, 101);
+            if (chance2 < 20) // ~19% chance
+            {
+                allFields[i] = "You choose";
+            }
+        }
+        // write modified values back (so finalString reflects changes)
+        class_ = allFields[0];
+        race = allFields[1];
+        background = allFields[2];
+        feat = allFields[3];
+        alignment = allFields[4];
+        sex = allFields[5];
+
+        string finalString =
+            $"Name: {name} | Sex: {sex} | Race: {race} | Class: {class_} | Starting feat: {feat} | Background: {background} | Motto: {motto} | Alignment: {alignment} | Attributes: {attributes}";
+        return Results.Ok(finalString);
+    }
+);
+
+app.Run();
+
+// [_] request some kind of international song database, and grab a random song OR AT LEAST A RANDOM BAND as theme song
+// https://soundcharts.com/blog/music-data-api
+// https://www.discogs.com/developers
+// [_] add height and weight - varied by races
+// [_] add MBTI type
+// [_] a /LeordisChar route with a nation, and a "take on Whetu's Collision"
+// [_] make a TG bot
+// [_] publish on Railway
+// [_] rethink - what is fun and good for creativity and what isn't (is the motto fun?)
