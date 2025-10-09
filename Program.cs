@@ -549,4 +549,4 @@ app.Run();
 // [v] publish on Railway
 // [v] add descriptions and commands to both bots
 // [v] include + and - bonuses to dice code parser
-// [_] connect backend to TG
+// [v] connect backend to TG
