@@ -498,25 +498,21 @@ botClient.StartReceiving(
                         ? incoming.Substring(2)
                         : incoming.Substring(1);
 
-                    try
+                    List<DicePart> parsed = ParseDiceCode(diceCode);
+                    if (parsed.Count() > 0)
                     {
-                        List<DicePart> parsed = ParseDiceCode(diceCode);
                         string result = RollDice(parsed);
                         response = result;
                     }
-                    catch
+                    // ----- Character generator -----
+                    else if (incoming.Equals("/char", StringComparison.OrdinalIgnoreCase))
                     {
-                        response = "Invalid dice code. Use /NdM, e.g., /1d20";
+                        response = GenerateCharacter(false);
                     }
-                }
-                // ----- Character generator -----
-                else if (incoming.Equals("/char", StringComparison.OrdinalIgnoreCase))
-                {
-                    response = GenerateCharacter(false);
-                }
-                else if (incoming.Equals("/leordischar", StringComparison.OrdinalIgnoreCase))
-                {
-                    response = GenerateCharacter(true);
+                    else if (incoming.Equals("/leordischar", StringComparison.OrdinalIgnoreCase))
+                    {
+                        response = GenerateCharacter(true);
+                    }
                 }
 
                 await bot.SendMessage(
