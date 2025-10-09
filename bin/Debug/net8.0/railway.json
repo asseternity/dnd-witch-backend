@@ -1,4 +1,10 @@
 {
-  "build": "dotnet build",
-  "start": "dotnet run --urls \"http://0.0.0.0:$PORT\""
+  "build": {
+    "command": "dotnet build",
+    "path": "."
+  },
+  "start": {
+    "command": "dotnet run --project ./YourProject.csproj --urls \"http://0.0.0.0:$PORT\"",
+    "path": "."
+  }
 }
