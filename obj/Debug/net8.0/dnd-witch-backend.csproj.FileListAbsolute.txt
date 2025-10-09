@@ -38,3 +38,4 @@ D:\Coding\dnd-witch-backend\bin\Debug\net8.0\data\races.json
 D:\Coding\dnd-witch-backend\bin\Debug\net8.0\data\alignments.json
 D:\Coding\dnd-witch-backend\bin\Debug\net8.0\data\motto_parts.json
 D:\Coding\dnd-witch-backend\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\Coding\dnd-witch-backend\obj\Debug\net8.0\dnd-witch-backend.sourcelink.json

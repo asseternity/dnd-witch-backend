@@ -264,70 +264,153 @@ string GenerateMotto()
     return $"{beginning}, {middle} {obj} {ending}";
 }
 
-// main GET route
+// main functions
+string GenerateCharacter(bool LeordisChar)
+{
+    Random rnd = new Random();
+
+    var name = GenerateFullName();
+    var motto = GenerateMotto();
+    var attributes = ProduceFunAttributeArray();
+    string class_ = PickRandomUpperAndInner(classData);
+    string race = PickRandomUpperAndInner(racesData);
+    string background = PickRandomFromArray(backgroundData);
+    string feat = PickRandomFromArray(featsData);
+    string alignment = PickRandomFromArray(alignmentsData);
+    string MBTI = MBTIGenerator.GetRandomMBTI();
+
+    string mainRace = race.Split(" ")[0];
+    var physicalStats = RaceStats.Stats[mainRace];
+    string height =
+        rnd.Next(physicalStats.minHeight, physicalStats.maxHeight + 1).ToString() + " cm";
+    string weight =
+        rnd.Next(physicalStats.minWeight, physicalStats.maxWeight + 1).ToString() + " kg";
+
+    string sex = "Female";
+    int chance = rnd.Next(1, 101);
+    if (chance < 40)
+    {
+        sex = "Male";
+    }
+    else if (chance < 60)
+    {
+        sex = "Non-Binary";
+    }
+
+    List<string> allFields = new List<string>();
+    allFields.Add(class_);
+    allFields.Add(race);
+    allFields.Add(background);
+    allFields.Add(feat);
+    allFields.Add(alignment);
+    allFields.Add(sex);
+    allFields.Add(height);
+    allFields.Add(weight);
+    // possibly replace some with "You choose"
+    for (int i = 0; i < allFields.Count; i++)
+    {
+        int chance2 = rnd.Next(1, 101);
+        if (chance2 < 20) // ~19% chance
+        {
+            allFields[i] = "You choose";
+        }
+    }
+    // write modified values back (so finalString reflects changes)
+    class_ = allFields[0];
+    race = allFields[1];
+    background = allFields[2];
+    feat = allFields[3];
+    alignment = allFields[4];
+    sex = allFields[5];
+    height = allFields[6];
+    weight = allFields[7];
+
+    // optional Leordis char stuff
+    string[] nations =
+    [
+        "Horde of Urshani",
+        "Nuu Confederation",
+        "Wilds of Agrestia (Emperor-aligned)",
+        "Wilds of Agrestia (M&S Aligned)",
+        "Umbra Aligned",
+        "Singhana Naya",
+        "Reyes Sin Lugar (old-bloods)",
+        "Reyes Sin Lugar (new-bloods)"
+    ];
+    string nation = nations[rnd.Next(0, nations.Length)];
+
+    string[] CollisionTakes =
+    [
+        "Whetu is a Hero. We are now protected by Ngati and the Lovers.",
+        "Whetu doomed the world to be devoured by the Great Old Ones.",
+        "Whetu meant well, but the Gods are tyrants, and we have to undo it.",
+        "I just want resurrections to be possible again.",
+        "Whatever dangers are out there, no natural disasters or diseases is worth it.",
+        "Whetu is a Hero of Humanoid Civilizations. Speakers are stronger than ever, civilization is thriving.",
+        "I am supporting the Nuu. Fuck everybody else. This is payback for trying to colonize Nuu.",
+        "Nobody should have been able to make that kind of decision. Whetu is a monster.",
+    ];
+    string collisionTake = CollisionTakes[rnd.Next(0, CollisionTakes.Length)];
+
+    string finalString = "";
+    if (LeordisChar)
+    {
+        finalString =
+            $"📝 Name: {name}\n"
+            + $"⚧ Sex: {sex}\n"
+            + $"🧬 Race: {race}\n"
+            + $"🌍 Nation: {nation}\n"
+            + $"💥 Opinion on Whetu's Collision: {race}\n"
+            + $"📏 Height: {height}\n"
+            + $"⚖️ Weight: {weight}\n"
+            + $"🗡️ Class: {class_}\n"
+            + $"💭 MBTI: {MBTI}\n"
+            + $"✨ Starting Feat: {feat}\n"
+            + $"🏞️ Background: {background}\n"
+            + $"🗣️ Motto: {motto}\n"
+            + $"📊 Attributes: {attributes}";
+    }
+    else
+    {
+        finalString =
+            $"📝 Name: {name}\n"
+            + $"⚧ Sex: {sex}\n"
+            + $"🧬 Race: {race}\n"
+            + $"📏 Height: {height}\n"
+            + $"⚖️ Weight: {weight}\n"
+            + $"🗡️ Class: {class_}\n"
+            + $"💭 MBTI: {MBTI}\n"
+            + $"✨ Starting Feat: {feat}\n"
+            + $"🏞️ Background: {background}\n"
+            + $"🗣️ Motto: {motto}\n"
+            + $"📊 Attributes: {attributes}";
+    }
+
+    return finalString;
+}
+
+// GET routes
 app.MapGet(
     "/char",
     () =>
     {
-        var name = GenerateFullName();
-        var motto = GenerateMotto();
-        var attributes = ProduceFunAttributeArray();
-        string class_ = PickRandomUpperAndInner(classData);
-        string race = PickRandomUpperAndInner(racesData);
-        string background = PickRandomFromArray(backgroundData);
-        string feat = PickRandomFromArray(featsData);
-        string alignment = PickRandomFromArray(alignmentsData);
+        return Results.Ok(GenerateCharacter(false));
+    }
+);
 
-        string sex = "Female";
-        Random rnd = new Random();
-        int chance = rnd.Next(1, 101);
-        if (chance < 40)
-        {
-            sex = "Male";
-        }
-        else if (chance < 60)
-        {
-            sex = "Non-Binary";
-        }
-
-        List<string> allFields = new List<string>();
-        allFields.Add(class_);
-        allFields.Add(race);
-        allFields.Add(background);
-        allFields.Add(feat);
-        allFields.Add(alignment);
-        allFields.Add(sex);
-        // possibly replace some with "You choose"
-        for (int i = 0; i < allFields.Count; i++)
-        {
-            int chance2 = rnd.Next(1, 101);
-            if (chance2 < 20) // ~19% chance
-            {
-                allFields[i] = "You choose";
-            }
-        }
-        // write modified values back (so finalString reflects changes)
-        class_ = allFields[0];
-        race = allFields[1];
-        background = allFields[2];
-        feat = allFields[3];
-        alignment = allFields[4];
-        sex = allFields[5];
-
-        string finalString =
-            $"Name: {name} | Sex: {sex} | Race: {race} | Class: {class_} | Starting feat: {feat} | Background: {background} | Motto: {motto} | Alignment: {alignment} | Attributes: {attributes}";
-        return Results.Ok(finalString);
+app.MapGet(
+    "/LeordisChar",
+    () =>
+    {
+        return Results.Ok(GenerateCharacter(true));
     }
 );
 
 app.Run();
 
-// [_] request some kind of international song database, and grab a random song OR AT LEAST A RANDOM BAND as theme song
-// https://soundcharts.com/blog/music-data-api
-// https://www.discogs.com/developers
-// [_] add height and weight - varied by races
-// [_] add MBTI type
-// [_] a /LeordisChar route with a nation, and a "take on Whetu's Collision"
+// [v] add height and weight - varied by races
+// [v] add MBTI type
+// [v] a /LeordisChar route with a nation, and a "take on Whetu's Collision"
+// [v] rethink - what is fun and good for creativity and what isn't (is the motto fun? is alignment?)
 // [_] make a TG bot
 // [_] publish on Railway
-// [_] rethink - what is fun and good for creativity and what isn't (is the motto fun?)
