@@ -492,6 +492,11 @@ botClient.StartReceiving(
             {
                 string incoming = update.Message.Text.Trim();
 
+                if (!incoming.StartsWith("/"))
+                {
+                    return;
+                }
+
                 string response = "The Witch does not abide by this command.";
 
                 // ----- Dice rolling -----
