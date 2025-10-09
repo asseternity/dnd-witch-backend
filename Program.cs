@@ -420,10 +420,10 @@ string GenerateCharacter(bool LeordisChar)
     {
         finalString =
             $"📝 Name: {name}\n"
-            + $"⚧ Sex: {sex}\n"
+            + $"⚧ Gender: {sex}\n"
             + $"🧬 Race: {race}\n"
             + $"🌍 Nation: {nation}\n"
-            + $"💥 Opinion on Whetu's Collision: {race}\n"
+            + $"💥 Opinion on Whetu's Collision: {collisionTake}\n"
             + $"📏 Height: {height}\n"
             + $"⚖️ Weight: {weight}\n"
             + $"🗡️ Class: {class_}\n"
@@ -437,7 +437,7 @@ string GenerateCharacter(bool LeordisChar)
     {
         finalString =
             $"📝 Name: {name}\n"
-            + $"⚧ Sex: {sex}\n"
+            + $"⚧ Gender: {sex}\n"
             + $"🧬 Race: {race}\n"
             + $"📏 Height: {height}\n"
             + $"⚖️ Weight: {weight}\n"
