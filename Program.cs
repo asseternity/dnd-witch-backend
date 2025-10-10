@@ -177,6 +177,7 @@ var classData = JObject.Parse(File.ReadAllText("data/classes.json"));
 var featsData = JObject.Parse(File.ReadAllText("data/feats.json"));
 var racesData = JObject.Parse(File.ReadAllText("data/races.json"));
 var alignmentsData = JObject.Parse(File.ReadAllText("data/alignments.json"));
+var godsData = JObject.Parse(File.ReadAllText("data/gods.json"));
 
 // helper:
 // within a main field (jsons have just one top tier field),
@@ -415,6 +416,12 @@ string GenerateCharacter(bool LeordisChar)
     ];
     string collisionTake = CollisionTakes[rnd.Next(0, CollisionTakes.Length)];
 
+    string god = "";
+    if (class_.StartsWith("Paladin") || class_.StartsWith("Cleric"))
+    {
+        god = PickRandomFromArray(godsData);
+    }
+
     string finalString = "";
     if (LeordisChar)
     {
@@ -427,6 +434,24 @@ string GenerateCharacter(bool LeordisChar)
             + $"📏 Height: {height}\n"
             + $"⚖️ Weight: {weight}\n"
             + $"🗡️ Class: {class_}\n"
+            + $"💭 MBTI: {MBTI}\n"
+            + $"✨ Starting Feat: {feat}\n"
+            + $"🏞️ Background: {background}\n"
+            + $"🗣️ Motto: {motto}\n"
+            + $"📊 Attributes: {attributes}";
+    }
+    else if (LeordisChar && god != "")
+    {
+        finalString =
+            $"📝 Name: {name}\n"
+            + $"⚧ Gender: {sex}\n"
+            + $"🧬 Race: {race}\n"
+            + $"🌍 Nation: {nation}\n"
+            + $"💥 Opinion on Whetu's Collision: {collisionTake}\n"
+            + $"📏 Height: {height}\n"
+            + $"⚖️ Weight: {weight}\n"
+            + $"🗡️ Class: {class_}\n"
+            + $"⛪ Worships: {god}\n"
             + $"💭 MBTI: {MBTI}\n"
             + $"✨ Starting Feat: {feat}\n"
             + $"🏞️ Background: {background}\n"

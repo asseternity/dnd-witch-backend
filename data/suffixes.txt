@@ -102,3 +102,137 @@ dze
 , the Whisper
 , the Sparrow
 , the Phantom
+ashen
+vale
+fang
+maw
+crest
+spire
+drake
+maiden
+bane
+grasp
+veil
+shade
+mourn
+song
+brand
+gloom
+wrath
+mark
+grimm
+tide
+seeker
+shaper
+warden
+breaker
+caller
+binder
+tamer
+hunter
+mender
+slayer
+forger
+weaver
+eater
+, the Black
+, the Red
+, the White
+, the Liar
+, the Blue
+, the Yellow
+, the Grey
+, the Mother-of-All
+, the Father-of-All
+, the Old
+, the Young
+, the Big
+, the Small
+, the Wasp
+, the Handsome
+, the Beautiful
+, the Ugly
+, the Twice-Damned
+, the Last Apostle
+, the Chain-Breaker
+, the Pale Flame
+, the Bone-Crowned
+, the First Among Traitors
+, the One Who Ate the Sun
+, the Shepherd of Ruin
+, the Archivist of Forgotten Names
+, the Mirror-Eyed
+, the Scribe of Ashes
+, the Candle That Would Not Die
+, the Oathless
+, the Crow of Glass
+, the Collector of Lost Souls
+, the Herald of the Hollow Moon
+, the Masked Redeemer
+, the Thorn-Eater
+, the Sword of Nine Sorrows
+, the Chosen of No Gods
+, the Kingmaker Unmade
+, the Laughing Wound
+, the Archivist of Shadows
+, the Devourer of Names
+, the Smiling Executioner
+, the Keeper of a Thousand Graves
+, the Prince of Ash and Salt
+, the Last Star of the Dying Court
+, the Bound Dreamer
+, the Black Sun’s Favorite
+, the Whisper in the Iron Hall
+, the Candle-Eyed Prophet
+, the Drowned Herald
+, the Sleepless
+, the Raven-Tongued
+, the Lord of Broken Blades
+, the Witchmother
+, the Thorn-Crowned
+, the Burned Apostle
+, the Hanged
+, the Hand
+, the Architect
+, the Prinxe
+, the Laughing
+, the Beggar
+, the Voice
+, the Patron
+, the Demon
+, the Quiet Betrayer
+, the Smile
+, the First
+, the Thief
+, the Sleeper
+, the Unseeing Monarch
+, the Golden Wretch
+, the Prophet of Wine
+, the Lord
+, the Warden
+, the Unburned
+, the FOol
+, the Last
+, the Silence
+, the Bone
+, the Laughter
+, the Flame
+, the Blind
+, the Rot
+, the Dream
+, the Heir
+, the Serpent-King
+, the Maw
+, the Nameless
+, the Feast
+, the Mad
+, the Keeper
+, the Drunk
+, the Saint
+, the Whisperer
+, the Pale
+, the Martyr
+, the Forgotten
+, the Dead
+, the Bastard
+, the White Vulture

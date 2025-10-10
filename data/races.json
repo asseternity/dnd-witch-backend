@@ -1,11 +1,7 @@
 {
   "races": {
     "Dragonborn": [],
-    "Dwarf": [
-      "Hill Dwarf",
-      "Mountain Dwarf",
-      "Duergar"
-    ],
+    "Dwarf": ["Hill Dwarf", "Mountain Dwarf", "Duergar"],
     "Elf": [
       "High Elf",
       "Wood Elf",
@@ -14,22 +10,11 @@
       "Sea Elf",
       "Shadar-Kai"
     ],
-    "Gnome": [
-      "Forest Gnome",
-      "Rock Gnome",
-      "Deep Gnome (Svirfneblin)"
-    ],
+    "Gnome": ["Forest Gnome", "Rock Gnome", "Deep Gnome (Svirfneblin)"],
     "Half-Elf": [],
     "Half-Orc": [],
-    "Halfling": [
-      "Lightfoot",
-      "Stout",
-      "Ghostwise"
-    ],
-    "Human": [
-      "Standard Human",
-      "Variant Human"
-    ],
+    "Halfling": ["Lightfoot", "Stout", "Ghostwise"],
+    "Human": ["Standard Human", "Variant Human"],
     "Tiefling": [
       "Asmodeus Tiefling",
       "Baalzebul Tiefling",
@@ -42,23 +27,11 @@
       "Zariel Tiefling"
     ],
     "Aarakocra": [],
-    "Aasimar": [
-      "Protector",
-      "Scourge",
-      "Fallen"
-    ],
+    "Aasimar": ["Protector", "Scourge", "Fallen"],
     "Fairy": [],
     "Firbolg": [],
-    "Genasi": [
-      "Air",
-      "Earth",
-      "Fire",
-      "Water"
-    ],
-    "Gith": [
-      "Githyanki",
-      "Githzerai"
-    ],
+    "Genasi": ["Air", "Earth", "Fire", "Water"],
+    "Gith": ["Githyanki", "Githzerai"],
     "Goliath": [],
     "Qudanti": [],
     "Pixie": [],
@@ -76,15 +49,7 @@
     "Lizardfolk": [],
     "Minotaur": [],
     "Orc": [],
-    "Yuan-Ti": [
-      "Pureblood",
-      "Malison",
-      "Abomination"
-    ],
-    "Warforged": [
-      "Envoy",
-      "Juggernaut",
-      "Skirmisher"
-    ]
+    "Yuan-Ti": ["Pureblood", "Malison", "Abomination"],
+    "Warforged": ["Envoy", "Juggernaut", "Skirmisher"]
   }
 }
