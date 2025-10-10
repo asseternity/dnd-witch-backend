@@ -425,38 +425,41 @@ string GenerateCharacter(bool LeordisChar)
     string finalString = "";
     if (LeordisChar)
     {
-        finalString =
-            $"📝 Name: {name}\n"
-            + $"⚧ Gender: {sex}\n"
-            + $"🧬 Race: {race}\n"
-            + $"🌍 Nation: {nation}\n"
-            + $"💥 Opinion on Whetu's Collision: {collisionTake}\n"
-            + $"📏 Height: {height}\n"
-            + $"⚖️ Weight: {weight}\n"
-            + $"🗡️ Class: {class_}\n"
-            + $"💭 MBTI: {MBTI}\n"
-            + $"✨ Starting Feat: {feat}\n"
-            + $"🏞️ Background: {background}\n"
-            + $"🗣️ Motto: {motto}\n"
-            + $"📊 Attributes: {attributes}";
-    }
-    else if (LeordisChar && god != "")
-    {
-        finalString =
-            $"📝 Name: {name}\n"
-            + $"⚧ Gender: {sex}\n"
-            + $"🧬 Race: {race}\n"
-            + $"🌍 Nation: {nation}\n"
-            + $"💥 Opinion on Whetu's Collision: {collisionTake}\n"
-            + $"📏 Height: {height}\n"
-            + $"⚖️ Weight: {weight}\n"
-            + $"🗡️ Class: {class_}\n"
-            + $"⛪ Worships: {god}\n"
-            + $"💭 MBTI: {MBTI}\n"
-            + $"✨ Starting Feat: {feat}\n"
-            + $"🏞️ Background: {background}\n"
-            + $"🗣️ Motto: {motto}\n"
-            + $"📊 Attributes: {attributes}";
+        if (god == "")
+        {
+            finalString =
+                $"📝 Name: {name}\n"
+                + $"⚧ Gender: {sex}\n"
+                + $"🧬 Race: {race}\n"
+                + $"🌍 Nation: {nation}\n"
+                + $"💥 Opinion on Whetu's Collision: {collisionTake}\n"
+                + $"📏 Height: {height}\n"
+                + $"⚖️ Weight: {weight}\n"
+                + $"🗡️ Class: {class_}\n"
+                + $"💭 MBTI: {MBTI}\n"
+                + $"✨ Starting Feat: {feat}\n"
+                + $"🏞️ Background: {background}\n"
+                + $"🗣️ Motto: {motto}\n"
+                + $"📊 Attributes: {attributes}";
+        }
+        else
+        {
+            finalString =
+                $"📝 Name: {name}\n"
+                + $"⚧ Gender: {sex}\n"
+                + $"🧬 Race: {race}\n"
+                + $"🌍 Nation: {nation}\n"
+                + $"💥 Opinion on Whetu's Collision: {collisionTake}\n"
+                + $"📏 Height: {height}\n"
+                + $"⚖️ Weight: {weight}\n"
+                + $"🗡️ Class: {class_}\n"
+                + $"⛪ Worships: {god}\n"
+                + $"💭 MBTI: {MBTI}\n"
+                + $"✨ Starting Feat: {feat}\n"
+                + $"🏞️ Background: {background}\n"
+                + $"🗣️ Motto: {motto}\n"
+                + $"📊 Attributes: {attributes}";
+        }
     }
     else
     {
