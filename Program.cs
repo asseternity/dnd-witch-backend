@@ -532,7 +532,7 @@ string GenerateDeity()
         $"📝 Name: {name}\n"
         + $"⚧ Gender: {sex}\n"
         + $"✨ Epithet: {epithet}\n"
-        + $"🧬 Domain: {finalDomain}\n"
+        + $"🧬 Domain: Deity of {finalDomain}\n"
         + $"🗡️ Class in Life: {class_}\n"
         + $"🧝 Race in Life: {race}\n"
         + $"📜 Commandment: {motto}\n"
