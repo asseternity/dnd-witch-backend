@@ -16,6 +16,16 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
+// import all the jsons
+var backgroundData = JObject.Parse(File.ReadAllText("data/backgrounds.json"));
+var classData = JObject.Parse(File.ReadAllText("data/classes.json"));
+var featsData = JObject.Parse(File.ReadAllText("data/feats.json"));
+var racesData = JObject.Parse(File.ReadAllText("data/races.json"));
+var alignmentsData = JObject.Parse(File.ReadAllText("data/alignments.json"));
+var godsData = JObject.Parse(File.ReadAllText("data/gods.json"));
+var domainsData = JObject.Parse(File.ReadAllText("data/domains.json"));
+var epithetsData = JObject.Parse(File.ReadAllText("data/epithets.json"));
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -171,14 +181,6 @@ app.MapGet(
 );
 
 // ------ character generator ------
-// import all the jsons
-var backgroundData = JObject.Parse(File.ReadAllText("data/backgrounds.json"));
-var classData = JObject.Parse(File.ReadAllText("data/classes.json"));
-var featsData = JObject.Parse(File.ReadAllText("data/feats.json"));
-var racesData = JObject.Parse(File.ReadAllText("data/races.json"));
-var alignmentsData = JObject.Parse(File.ReadAllText("data/alignments.json"));
-var godsData = JObject.Parse(File.ReadAllText("data/gods.json"));
-
 // helper:
 // within a main field (jsons have just one top tier field),
 // pick a random upper field,
@@ -480,6 +482,66 @@ string GenerateCharacter(bool LeordisChar)
     return finalString;
 }
 
+// generate deity
+string RandomDeityAttribute()
+{
+    Random rnd = new Random();
+    return rnd.Next(3, 31).ToString();
+}
+string GenerateDeity()
+{
+    Random rnd = new Random();
+    string sex = "Female";
+    int chance = rnd.Next(1, 101);
+    if (chance < 40)
+    {
+        sex = "Male";
+    }
+    else if (chance < 60)
+    {
+        sex = "Non-Binary";
+    }
+
+    List<string> attributes = new List<string>();
+    for (int i = 0; i < 6; i++)
+    {
+        string roll = RandomDeityAttribute();
+        attributes.Add(roll);
+    }
+    string finalAttributes = String.Join(", ", attributes.ToArray());
+    string name = GenerateFullName().Split(" ")[0];
+    string epithet = PickRandomFromArray(epithetsData);
+    var motto = GenerateMotto();
+    string domain1 = PickRandomFromArray(domainsData);
+    string domain2 = PickRandomFromArray(domainsData);
+    if (domain2 == domain1)
+    {
+        domain2 = PickRandomFromArray(domainsData);
+    }
+    string domain3 = PickRandomFromArray(domainsData);
+    if (domain3 == domain2 || domain3 == domain1)
+    {
+        domain3 = PickRandomFromArray(domainsData);
+    }
+    string finalDomain = domain1 + ", " + domain2 + " and " + domain3;
+    string class_ = PickRandomUpperAndInner(classData);
+    string race = PickRandomUpperAndInner(racesData);
+    string MBTI = MBTIGenerator.GetRandomMBTI();
+
+    string finalString =
+        $"📝 Name: {name}\n"
+        + $"⚧ Gender: {sex}\n"
+        + $"✨ Epithet: {epithet}\n"
+        + $"🧬 Domain: {finalDomain}\n"
+        + $"🗡️ Class in Life: {class_}\n"
+        + $"🧝 Race in Life: {race}\n"
+        + $"📜 Commandment: {motto}\n"
+        + $"💭 MBTI: {MBTI}\n"
+        + $"📊 Attributes: {finalAttributes}";
+
+    return finalString;
+}
+
 // GET routes
 app.MapGet(
     "/char",
@@ -548,6 +610,10 @@ botClient.StartReceiving(
                     else if (incoming.Equals("/leordischar", StringComparison.OrdinalIgnoreCase))
                     {
                         response = GenerateCharacter(true);
+                    }
+                    else if (incoming.Equals("/deity", StringComparison.OrdinalIgnoreCase))
+                    {
+                        response = GenerateDeity();
                     }
                 }
 
