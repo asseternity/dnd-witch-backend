@@ -702,6 +702,25 @@ string GenerateCity()
         + $"Recently, the town is talking about {recentNews}.";
 }
 
+// start
+string StartString()
+{
+    return "🧙‍♀️ Welcome, wanderer.\n"
+        + "I see your fate is tangled with dice and destiny.\n"
+        + "Roll, create, or summon. ⚔️✨\n"
+        + "Use /help if your path is unclear.\n";
+}
+
+// help
+string HelpString()
+{
+    return "📜 Commands you may dare:\n"
+        + "/rXdY → Roll dice (e.g., /1d20+3). 🎲\n"
+        + "/char → A random adventurer appears. 🧝‍♂️\n"
+        + "/deity → Summon a deity of your making. ✨\n"
+        + "/city → Reveal a city with secrets. 🏰\n";
+}
+
 // GET routes
 app.MapGet(
     "/char",
@@ -778,6 +797,14 @@ botClient.StartReceiving(
                     else if (incoming.Equals("/city", StringComparison.OrdinalIgnoreCase))
                     {
                         response = GenerateCity();
+                    }
+                    else if (incoming.Equals("/start", StringComparison.OrdinalIgnoreCase))
+                    {
+                        response = StartString();
+                    }
+                    else if (incoming.Equals("/help", StringComparison.OrdinalIgnoreCase))
+                    {
+                        response = HelpString();
                     }
                 }
 
