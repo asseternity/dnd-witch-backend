@@ -26,6 +26,17 @@ var godsData = JObject.Parse(File.ReadAllText("data/gods.json"));
 var domainsData = JObject.Parse(File.ReadAllText("data/domains.json"));
 var epithetsData = JObject.Parse(File.ReadAllText("data/epithets.json"));
 
+var cityNamePrefixes = JObject.Parse(File.ReadAllText("data/city/cityNamePrefixes.json"));
+var cityNameSuffixes = JObject.Parse(File.ReadAllText("data/city/cityNameSuffixes.json"));
+var geographyCorrelations = JObject.Parse(File.ReadAllText("data/city/geographyCorrelations.json"));
+var geographyTypes = JObject.Parse(File.ReadAllText("data/city/geographyTypes.json"));
+var recentEvents = JObject.Parse(File.ReadAllText("data/city/recent_events.json"));
+var rulerPopularities = JObject.Parse(File.ReadAllText("data/city/rulerPopularities.json"));
+var rulerTitles = JObject.Parse(File.ReadAllText("data/city/rulerTitles.json"));
+var seats = JObject.Parse(File.ReadAllText("data/city/seats.json"));
+var socialClasses = JObject.Parse(File.ReadAllText("data/city/socialClasses.json"));
+var weather = JObject.Parse(File.ReadAllText("data/city/weather.json"));
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -540,6 +551,129 @@ string GenerateDeity()
         + $"📊 Attributes: {finalAttributes}";
 
     return finalString;
+}
+
+// city generator
+string GenerateCity()
+{
+    Random rnd = new Random();
+
+    // name
+    string suffix = PickRandomFromArray(cityNameSuffixes);
+    string prefix = PickRandomFromArray(cityNamePrefixes);
+    string name = GenerateFullName().Split(" ")[0];
+    int chance = rnd.Next(0, 100);
+    if (chance < 50)
+    {
+        name = name + suffix;
+    }
+    if (chance < 30)
+    {
+        name = prefix + " " + name;
+    }
+
+    // size
+    string[] sizes =
+    {
+        "small",
+        "large",
+        "average",
+        "the biggest and most important",
+        "tiny",
+        "quaint",
+        "mid-sized",
+        "regionally important",
+        "key strategic",
+        "cozy"
+    };
+    int random1 = rnd.Next(0, sizes.Length); // corrected to avoid out-of-bounds
+    string size = sizes[random1];
+
+    // population
+    int minPop = 0;
+    int maxPop = 1;
+    switch (size)
+    {
+        case "small":
+            minPop = 2000;
+            maxPop = 8000;
+            break;
+        case "large":
+            minPop = 100000;
+            maxPop = 1000000;
+            break;
+        case "average":
+            minPop = 10000;
+            maxPop = 100000;
+            break;
+        case "the biggest and most important":
+            minPop = 5000000;
+            maxPop = 50000000;
+            break;
+        case "tiny":
+            minPop = 300;
+            maxPop = 2000;
+            break;
+        case "quaint":
+            minPop = 1000;
+            maxPop = 5000;
+            break;
+        case "mid-sized":
+            minPop = 10000;
+            maxPop = 50000;
+            break;
+        case "regionally important":
+            minPop = 200000;
+            maxPop = 1000000;
+            break;
+        case "key strategic":
+            minPop = 1000000;
+            maxPop = 6000000;
+            break;
+        case "cozy":
+            minPop = 1000;
+            maxPop = 25000;
+            break;
+    }
+    int population = rnd.Next(minPop, maxPop);
+
+    // weather
+    string weatherString = PickRandomFromArray(weather);
+
+    // geography
+    string geographyCorrelation = PickRandomFromArray(geographyCorrelations);
+    string geographyName = GenerateFullName().Split(" ")[0];
+    string geographyType = PickRandomFromArray(geographyTypes);
+
+    // social classes
+    List<SocialClass> selectedSocialClasses = new List<SocialClass>();
+    for (int i = 0; i < 3; i++)
+    {
+        string socialClassName = PickRandomFromArray(socialClasses);
+        int percentage = rnd.Next(0, 101);
+        SocialClass newSocialClass = new SocialClass();
+        newSocialClass.name = socialClassName;
+        newSocialClass.percentage = percentage.ToString() + "%";
+        selectedSocialClasses.Add(newSocialClass);
+    }
+
+    // ruler
+    string rulerTitle = PickRandomFromArray(rulerTitles);
+    string rulerPopularity = PickRandomFromArray(rulerPopularities);
+    string seat = PickRandomFromArray(seats);
+
+    // palace / seat name
+    string palaceName = GenerateFullName().Split(" ")[0];
+
+    // recent news
+    string recentNews = PickRandomFromArray(recentEvents);
+
+    // final return with all variables filled
+    return $"The city of {name} is a {size} town of {population} people, located {geographyCorrelation} the {weatherString} {geographyName} {geographyType}. "
+        + $"The main social classes are: {selectedSocialClasses[0].name} ({selectedSocialClasses[0].percentage}), "
+        + $"{selectedSocialClasses[1].name} ({selectedSocialClasses[1].percentage}), {selectedSocialClasses[2].name} ({selectedSocialClasses[2].percentage}). "
+        + $"The city is ruled by a {rulerTitle}, {rulerPopularity} the citizens, out of the {palaceName} {seat}. "
+        + $"Recently, the town is talking about {recentNews}.";
 }
 
 // GET routes
