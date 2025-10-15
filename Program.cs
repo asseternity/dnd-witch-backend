@@ -137,7 +137,7 @@ List<DicePart> ParseDiceCode(string code)
 string RollDice(List<DicePart> parts)
 {
     Random rnd = new Random();
-    var rolls = new List<int>();
+    var rolls = new List<RollResult>();
     int modifierTotal = 0;
 
     foreach (var part in parts)
@@ -147,7 +147,10 @@ string RollDice(List<DicePart> parts)
             for (int i = 0; i < Math.Abs(part.Count); i++)
             {
                 int roll = rnd.Next(1, part.Sides + 1);
-                rolls.Add((part.Count > 0) ? roll : -roll);
+                RollResult rollResult = new RollResult();
+                rollResult.result = roll;
+                rollResult.dice = part.Sides;
+                rolls.Add(rollResult);
             }
         }
         else
@@ -156,8 +159,8 @@ string RollDice(List<DicePart> parts)
         }
     }
 
-    rolls.Sort((a, b) => b.CompareTo(a)); // descending
-    int total = rolls.Sum() + modifierTotal;
+    rolls.Sort((a, b) => b.result.CompareTo(a.result)); // descending
+    int total = rolls.Sum(r => r.result) + modifierTotal;
 
     // Special case: one die, no modifiers
     if (rolls.Count == 1 && modifierTotal == 0)
@@ -165,7 +168,10 @@ string RollDice(List<DicePart> parts)
         return $"You rolled: {rolls[0]}";
     }
 
-    string rollsStr = string.Join(", ", rolls);
+    List<string> rollResults = new List<string>();
+    rollResults = rolls.Select(r => $"{r.result}/{r.dice}").ToList();
+
+    string rollsStr = string.Join(", ", rollResults);
     string modifierStr = (modifierTotal >= 0) ? $"+{modifierTotal}" : modifierTotal.ToString();
 
     return $"Total: {total} | Rolls: {rollsStr} | Modifier: {modifierStr}";
