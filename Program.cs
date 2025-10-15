@@ -165,7 +165,7 @@ string RollDice(List<DicePart> parts)
     // Special case: one die, no modifiers
     if (rolls.Count == 1 && modifierTotal == 0)
     {
-        return $"You rolled: {rolls[0]}";
+        return $"You rolled: {rolls[0].result}";
     }
 
     List<string> rollResults = new List<string>();
