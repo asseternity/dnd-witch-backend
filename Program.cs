@@ -726,6 +726,7 @@ string HelpString()
     return "📜 Commands you may dare:\n"
         + "/rXdY → Roll dice (e.g., /1d20+3). 🎲\n"
         + "/char → A random adventurer appears. 🧝‍♂️\n"
+        + "/char_no_blanks → No 'you choose' fields. ⚔️\n"
         + "/deity → Summon a deity of your making. ✨\n"
         + "/city → Reveal a city with secrets. 🏰\n";
 }
