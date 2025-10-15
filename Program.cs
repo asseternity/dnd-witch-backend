@@ -36,6 +36,7 @@ var rulerTitles = JObject.Parse(File.ReadAllText("data/city/rulerTitles.json"));
 var seats = JObject.Parse(File.ReadAllText("data/city/seats.json"));
 var socialClasses = JObject.Parse(File.ReadAllText("data/city/socialClasses.json"));
 var weather = JObject.Parse(File.ReadAllText("data/city/weather.json"));
+var economies = JObject.Parse(File.ReadAllText("data/city/economy.json"));
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -572,19 +573,22 @@ string GenerateCity()
         name = prefix + " " + name;
     }
 
+    // economy
+    string economy = PickRandomFromArray(economies);
+
     // size
     string[] sizes =
     {
-        "small",
-        "large",
-        "average",
+        "a small",
+        "a large",
+        "an average",
         "the biggest and most important",
-        "tiny",
-        "quaint",
-        "mid-sized",
-        "regionally important",
-        "key strategic",
-        "cozy"
+        "a tiny",
+        "a quaint",
+        "a mid-sized",
+        "a regionally important",
+        "a key strategic",
+        "a cozy"
     };
     int random1 = rnd.Next(0, sizes.Length); // corrected to avoid out-of-bounds
     string size = sizes[random1];
@@ -594,15 +598,15 @@ string GenerateCity()
     int maxPop = 1;
     switch (size)
     {
-        case "small":
+        case "a small":
             minPop = 2000;
             maxPop = 8000;
             break;
-        case "large":
+        case "a large":
             minPop = 100000;
             maxPop = 1000000;
             break;
-        case "average":
+        case "an average":
             minPop = 10000;
             maxPop = 100000;
             break;
@@ -610,27 +614,27 @@ string GenerateCity()
             minPop = 5000000;
             maxPop = 50000000;
             break;
-        case "tiny":
+        case "a tiny":
             minPop = 300;
             maxPop = 2000;
             break;
-        case "quaint":
+        case "a quaint":
             minPop = 1000;
             maxPop = 5000;
             break;
-        case "mid-sized":
+        case "a mid-sized":
             minPop = 10000;
             maxPop = 50000;
             break;
-        case "regionally important":
+        case "a regionally important":
             minPop = 200000;
             maxPop = 1000000;
             break;
-        case "key strategic":
+        case "a key strategic":
             minPop = 1000000;
             maxPop = 6000000;
             break;
-        case "cozy":
+        case "a cozy":
             minPop = 1000;
             maxPop = 25000;
             break;
@@ -650,12 +654,34 @@ string GenerateCity()
     for (int i = 0; i < 3; i++)
     {
         string socialClassName = PickRandomFromArray(socialClasses);
-        int percentage = rnd.Next(0, 101);
+        int percentage = 1;
+        if (i == 0)
+        {
+            percentage = rnd.Next(1, 61);
+        }
+        else if (i == 1)
+        {
+            percentage = rnd.Next(1, 31);
+        }
+        else
+        {
+            percentage =
+                100
+                - selectedSocialClasses[0].percentage
+                - selectedSocialClasses[1].percentage
+                - 15;
+            if (percentage < 0)
+            {
+                percentage =
+                    100 - selectedSocialClasses[0].percentage - selectedSocialClasses[1].percentage;
+            }
+        }
         SocialClass newSocialClass = new SocialClass();
         newSocialClass.name = socialClassName;
-        newSocialClass.percentage = percentage.ToString() + "%";
+        newSocialClass.percentage = percentage;
         selectedSocialClasses.Add(newSocialClass);
     }
+    selectedSocialClasses = selectedSocialClasses.OrderByDescending(sc => sc.percentage).ToList();
 
     // ruler
     string rulerTitle = PickRandomFromArray(rulerTitles);
@@ -669,9 +695,9 @@ string GenerateCity()
     string recentNews = PickRandomFromArray(recentEvents);
 
     // final return with all variables filled
-    return $"The city of {name} is a {size} town of {population} people, located {geographyCorrelation} the {weatherString} {geographyName} {geographyType}. "
-        + $"The main social classes are: {selectedSocialClasses[0].name} ({selectedSocialClasses[0].percentage}), "
-        + $"{selectedSocialClasses[1].name} ({selectedSocialClasses[1].percentage}), {selectedSocialClasses[2].name} ({selectedSocialClasses[2].percentage}). "
+    return $"The city of {name} is {size} {economy} town of {population} people, located {geographyCorrelation} {weatherString} {geographyName} {geographyType}. "
+        + $"The main social classes are: {selectedSocialClasses[0].name} ({selectedSocialClasses[0].percentage.ToString() + "%"}), "
+        + $"{selectedSocialClasses[1].name} ({selectedSocialClasses[1].percentage.ToString() + "%"}), {selectedSocialClasses[2].name} ({selectedSocialClasses[2].percentage.ToString() + "%"}). "
         + $"The city is ruled by a {rulerTitle}, {rulerPopularity} the citizens, out of the {palaceName} {seat}. "
         + $"Recently, the town is talking about {recentNews}.";
 }
