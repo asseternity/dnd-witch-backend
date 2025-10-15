@@ -749,6 +749,10 @@ botClient.StartReceiving(
                     {
                         response = GenerateDeity();
                     }
+                    else if (incoming.Equals("/city", StringComparison.OrdinalIgnoreCase))
+                    {
+                        response = GenerateCity();
+                    }
                 }
 
                 await bot.SendMessage(
