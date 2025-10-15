@@ -349,7 +349,7 @@ string GenerateMotto()
 }
 
 // main functions
-string GenerateCharacter(bool LeordisChar)
+string GenerateCharacter(bool LeordisChar, bool makeYouChooses)
 {
     Random rnd = new Random();
 
@@ -381,33 +381,36 @@ string GenerateCharacter(bool LeordisChar)
         sex = "Non-Binary";
     }
 
-    List<string> allFields = new List<string>();
-    allFields.Add(class_);
-    allFields.Add(race);
-    allFields.Add(background);
-    allFields.Add(feat);
-    allFields.Add(alignment);
-    allFields.Add(sex);
-    allFields.Add(height);
-    allFields.Add(weight);
-    // possibly replace some with "You choose"
-    for (int i = 0; i < allFields.Count; i++)
+    if (makeYouChooses)
     {
-        int chance2 = rnd.Next(1, 101);
-        if (chance2 < 20) // ~19% chance
+        List<string> allFields = new List<string>();
+        allFields.Add(class_);
+        allFields.Add(race);
+        allFields.Add(background);
+        allFields.Add(feat);
+        allFields.Add(alignment);
+        allFields.Add(sex);
+        allFields.Add(height);
+        allFields.Add(weight);
+        // possibly replace some with "You choose"
+        for (int i = 0; i < allFields.Count; i++)
         {
-            allFields[i] = "You choose";
+            int chance2 = rnd.Next(1, 101);
+            if (chance2 < 20) // ~19% chance
+            {
+                allFields[i] = "You choose";
+            }
         }
+        // write modified values back (so finalString reflects changes)
+        class_ = allFields[0];
+        race = allFields[1];
+        background = allFields[2];
+        feat = allFields[3];
+        alignment = allFields[4];
+        sex = allFields[5];
+        height = allFields[6];
+        weight = allFields[7];
     }
-    // write modified values back (so finalString reflects changes)
-    class_ = allFields[0];
-    race = allFields[1];
-    background = allFields[2];
-    feat = allFields[3];
-    alignment = allFields[4];
-    sex = allFields[5];
-    height = allFields[6];
-    weight = allFields[7];
 
     // optional Leordis char stuff
     string[] nations =
@@ -732,7 +735,7 @@ app.MapGet(
     "/char",
     () =>
     {
-        return Results.Ok(GenerateCharacter(false));
+        return Results.Ok(GenerateCharacter(false, true));
     }
 );
 
@@ -740,7 +743,7 @@ app.MapGet(
     "/LeordisChar",
     () =>
     {
-        return Results.Ok(GenerateCharacter(true));
+        return Results.Ok(GenerateCharacter(true, true));
     }
 );
 
@@ -790,11 +793,24 @@ botClient.StartReceiving(
                     // ----- Character generator -----
                     else if (incoming.Equals("/char", StringComparison.OrdinalIgnoreCase))
                     {
-                        response = GenerateCharacter(false);
+                        response = GenerateCharacter(false, true);
                     }
                     else if (incoming.Equals("/leordischar", StringComparison.OrdinalIgnoreCase))
                     {
-                        response = GenerateCharacter(true);
+                        response = GenerateCharacter(true, true);
+                    }
+                    else if (incoming.Equals("/char_no_blanks", StringComparison.OrdinalIgnoreCase))
+                    {
+                        response = GenerateCharacter(false, false);
+                    }
+                    else if (
+                        incoming.Equals(
+                            "/leordischar_no_blanks",
+                            StringComparison.OrdinalIgnoreCase
+                        )
+                    )
+                    {
+                        response = GenerateCharacter(true, false);
                     }
                     else if (incoming.Equals("/deity", StringComparison.OrdinalIgnoreCase))
                     {
