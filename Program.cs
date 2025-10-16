@@ -32,11 +32,13 @@ var geographyCorrelations = JObject.Parse(File.ReadAllText("data/city/geographyC
 var geographyTypes = JObject.Parse(File.ReadAllText("data/city/geographyTypes.json"));
 var recentEvents = JObject.Parse(File.ReadAllText("data/city/recent_events.json"));
 var rulerPopularities = JObject.Parse(File.ReadAllText("data/city/rulerPopularities.json"));
+var rulerPersonalities = JObject.Parse(File.ReadAllText("data/city/personalities.json"));
 var rulerTitles = JObject.Parse(File.ReadAllText("data/city/rulerTitles.json"));
 var seats = JObject.Parse(File.ReadAllText("data/city/seats.json"));
 var socialClasses = JObject.Parse(File.ReadAllText("data/city/socialClasses.json"));
 var weather = JObject.Parse(File.ReadAllText("data/city/weather.json"));
 var economies = JObject.Parse(File.ReadAllText("data/city/economy.json"));
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -694,6 +696,7 @@ string GenerateCity()
 
     // ruler
     string rulerTitle = PickRandomFromArray(rulerTitles);
+    string rulerPersonality = PickRandomFromArray(rulerPersonalities);
     string rulerPopularity = PickRandomFromArray(rulerPopularities);
     string seat = PickRandomFromArray(seats);
 
@@ -707,7 +710,7 @@ string GenerateCity()
     return $"The city of {name} is {size} {economy} town of {population} people, located {geographyCorrelation} {weatherString} {geographyName} {geographyType}. "
         + $"The main social classes are: {selectedSocialClasses[0].name} ({selectedSocialClasses[0].percentage.ToString() + "%"}), "
         + $"{selectedSocialClasses[1].name} ({selectedSocialClasses[1].percentage.ToString() + "%"}), {selectedSocialClasses[2].name} ({selectedSocialClasses[2].percentage.ToString() + "%"}). "
-        + $"The city is ruled by a {rulerTitle}, {rulerPopularity} the citizens, out of the {palaceName} {seat}. "
+        + $"The city is ruled by {rulerPersonalities} {rulerTitle}, {rulerPopularity} the citizens, out of the {palaceName} {seat}. "
         + $"Recently, the town is talking about {recentNews}.";
 }
 
