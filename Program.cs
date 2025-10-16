@@ -706,12 +706,17 @@ string GenerateCity()
     // recent news
     string recentNews = PickRandomFromArray(recentEvents);
 
+    // city stats
+    int coziness = rnd.Next(1, 101);
+    int infrastructure = rnd.Next(1, 101);
+    int richness = rnd.Next(1, 101);
+
     // final return with all variables filled
     return $"The city of {name} is {size} {economy} town of {population} people, located {geographyCorrelation} {weatherString} {geographyName} {geographyType}. "
         + $"The main social classes are: {selectedSocialClasses[0].name} ({selectedSocialClasses[0].percentage.ToString() + "%"}), "
         + $"{selectedSocialClasses[1].name} ({selectedSocialClasses[1].percentage.ToString() + "%"}), {selectedSocialClasses[2].name} ({selectedSocialClasses[2].percentage.ToString() + "%"}). "
         + $"The city is ruled by {rulerPersonalities} {rulerTitle}, {rulerPopularity} the citizens, out of the {palaceName} {seat}. "
-        + $"Recently, the town is talking about {recentNews}.";
+        + $"Recently, the town is talking about {recentNews}. City's stats: coziness of {coziness.ToString()}% | infrastructure of {infrastructure.ToString()}% | richness of {richness.ToString()}%.";
 }
 
 // start
