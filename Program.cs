@@ -886,11 +886,11 @@ string GenerateFaction()
     // symbol
     string json2 = File.ReadAllText("data/faction/symbols.json");
     var parts2 = JObject.Parse(json2);
-    string symbol_word_1 = parts["first_words"]
-        .ElementAt(rand.Next(parts["first_words"].Count()))
+    string symbol_word_1 = parts2["first_words"]
+        .ElementAt(rand.Next(parts2["first_words"].Count()))
         .ToString();
-    string symbol_word_2 = parts["second_words"]
-        .ElementAt(rand.Next(parts["second_words"].Count()))
+    string symbol_word_2 = parts2["second_words"]
+        .ElementAt(rand.Next(parts2["second_words"].Count()))
         .ToString();
     string symbol = $"{symbol_word_1} {symbol_word_2}";
 
