@@ -39,7 +39,6 @@ var socialClasses = JObject.Parse(File.ReadAllText("data/city/socialClasses.json
 var weather = JObject.Parse(File.ReadAllText("data/city/weather.json"));
 var economies = JObject.Parse(File.ReadAllText("data/city/economy.json"));
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -739,6 +738,156 @@ string HelpString()
         + "/city → Reveal a city with secrets. 🏰\n";
 }
 
+// [_] Generate a faction --- motto, piecemeal goal, leader, size, numbers, member jobs / social classes!
+string GenerateFaction()
+{
+    Random rand = new Random();
+
+    // name
+    string json = File.ReadAllText("data/faction/name_parts.json");
+    var parts = JObject.Parse(json);
+    string generated_proper_noun = GenerateFullName().Split(" ")[0];
+    string prefix = parts["prefixes"].ElementAt(rand.Next(parts["prefixes"].Count())).ToString();
+    string first_word = parts["first_words"]
+        .ElementAt(rand.Next(parts["first_words"].Count()))
+        .ToString();
+    string second_word = parts["second_words"]
+        .ElementAt(rand.Next(parts["second_words"].Count()))
+        .ToString();
+    string suffix = parts["suffixes"].ElementAt(rand.Next(parts["suffixes"].Count())).ToString();
+
+    var patterns = Enum.GetValues(typeof(FactionNamePatterns));
+    FactionNamePatterns pattern = (FactionNamePatterns)
+        patterns.GetValue(rand.Next(patterns.Length));
+
+    string factionName = "";
+
+    switch (pattern)
+    {
+        // Single-part names
+        case FactionNamePatterns.Prefix:
+            factionName = $"{prefix}";
+            break;
+        case FactionNamePatterns.FirstWord:
+            factionName = $"{first_word}";
+            break;
+        case FactionNamePatterns.SecondWord:
+            factionName = $"{second_word}";
+            break;
+        case FactionNamePatterns.Suffix:
+            factionName = $"{suffix}";
+            break;
+        case FactionNamePatterns.GeneratedProperNoun:
+            factionName = $"{generated_proper_noun}";
+            break;
+
+        // Two-part combinations
+        case FactionNamePatterns.Prefix_FirstWord:
+            factionName = $"{prefix} {first_word}";
+            break;
+        case FactionNamePatterns.Prefix_SecondWord:
+            factionName = $"{prefix} {second_word}";
+            break;
+        case FactionNamePatterns.Prefix_Suffix:
+            factionName = $"{prefix} {suffix}";
+            break;
+        case FactionNamePatterns.Prefix_GeneratedProperNoun:
+            factionName = $"{prefix} {generated_proper_noun}";
+            break;
+        case FactionNamePatterns.FirstWord_SecondWord:
+            factionName = $"{first_word} {second_word}";
+            break;
+        case FactionNamePatterns.FirstWord_Suffix:
+            factionName = $"{first_word} {suffix}";
+            break;
+        case FactionNamePatterns.FirstWord_GeneratedProperNoun:
+            factionName = $"{first_word} {generated_proper_noun}";
+            break;
+        case FactionNamePatterns.SecondWord_Suffix:
+            factionName = $"{second_word} {suffix}";
+            break;
+        case FactionNamePatterns.SecondWord_GeneratedProperNoun:
+            factionName = $"{second_word} {generated_proper_noun}";
+            break;
+        case FactionNamePatterns.GeneratedProperNoun_Suffix:
+            factionName = $"{generated_proper_noun} {suffix}";
+            break;
+
+        // Three-part combinations
+        case FactionNamePatterns.Prefix_FirstWord_SecondWord:
+            factionName = $"{prefix} {first_word} {second_word}";
+            break;
+        case FactionNamePatterns.Prefix_FirstWord_Suffix:
+            factionName = $"{prefix} {first_word} {suffix}";
+            break;
+        case FactionNamePatterns.Prefix_FirstWord_GeneratedProperNoun:
+            factionName = $"{prefix} {first_word} {generated_proper_noun}";
+            break;
+        case FactionNamePatterns.Prefix_SecondWord_Suffix:
+            factionName = $"{prefix} {second_word} {suffix}";
+            break;
+        case FactionNamePatterns.Prefix_SecondWord_GeneratedProperNoun:
+            factionName = $"{prefix} {second_word} {generated_proper_noun}";
+            break;
+        case FactionNamePatterns.Prefix_GeneratedProperNoun_Suffix:
+            factionName = $"{prefix} {generated_proper_noun} {suffix}";
+            break;
+        case FactionNamePatterns.FirstWord_SecondWord_Suffix:
+            factionName = $"{first_word} {second_word} {suffix}";
+            break;
+        case FactionNamePatterns.FirstWord_SecondWord_GeneratedProperNoun:
+            factionName = $"{first_word} {second_word} {generated_proper_noun}";
+            break;
+        case FactionNamePatterns.FirstWord_GeneratedProperNoun_Suffix:
+            factionName = $"{first_word} {generated_proper_noun} {suffix}";
+            break;
+        case FactionNamePatterns.SecondWord_GeneratedProperNoun_Suffix:
+            factionName = $"{second_word} {generated_proper_noun} {suffix}";
+            break;
+
+        // Four-part combinations
+        case FactionNamePatterns.Prefix_FirstWord_SecondWord_Suffix:
+            factionName = $"{prefix} {first_word} {second_word} {suffix}";
+            break;
+        case FactionNamePatterns.Prefix_FirstWord_SecondWord_GeneratedProperNoun:
+            factionName = $"{prefix} {first_word} {second_word} {generated_proper_noun}";
+            break;
+        case FactionNamePatterns.Prefix_FirstWord_GeneratedProperNoun_Suffix:
+            factionName = $"{prefix} {first_word} {generated_proper_noun} {suffix}";
+            break;
+        case FactionNamePatterns.Prefix_SecondWord_GeneratedProperNoun_Suffix:
+            factionName = $"{prefix} {second_word} {generated_proper_noun} {suffix}";
+            break;
+        case FactionNamePatterns.FirstWord_SecondWord_GeneratedProperNoun_Suffix:
+            factionName = $"{first_word} {second_word} {generated_proper_noun} {suffix}";
+            break;
+
+        // All five parts
+        case FactionNamePatterns.Prefix_FirstWord_SecondWord_GeneratedProperNoun_Suffix:
+            factionName = $"{prefix} {first_word} {second_word} {generated_proper_noun} {suffix}";
+            break;
+
+        // Fallback
+        default:
+            factionName = $"{prefix} {first_word} {second_word}";
+            break;
+    }
+
+    string finalString =
+        "Name: The [chance adjective like Brave, Lost, Honorable] [first word] [second word] [potential suffix, like 'of Glory']\n"
+        + "Type: [criminal association / volunteering group / mercenary band / gang / trade guild / holy order / nomadic commune]\n"
+        + "Symbol: []"
+        + "Size: [1000] members across [3] cities\n"
+        + "Classes: [3 social classes with percentage]\n"
+        + "Leader: [same as city ruler]\n"
+        + "Goal: To [piecemeal] [verb] [adjective] [subject] [finisher] \n"
+        + "Political compass typing: []\n";
+
+    return factionName;
+}
+
+// [_] Generate a nation --- name, two cities, capital, deity, monarch, factions
+
 // GET routes
 app.MapGet(
     "/char",
@@ -836,6 +985,10 @@ botClient.StartReceiving(
                     else if (incoming.Equals("/help", StringComparison.OrdinalIgnoreCase))
                     {
                         response = HelpString();
+                    }
+                    else if (incoming.Equals("/faction", StringComparison.OrdinalIgnoreCase))
+                    {
+                        response = GenerateFaction();
                     }
                 }
 
