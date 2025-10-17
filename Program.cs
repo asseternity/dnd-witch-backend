@@ -885,7 +885,7 @@ string GenerateFaction()
 
     // symbol
     string json2 = File.ReadAllText("data/faction/symbols.json");
-    var parts2 = JObject.Parse(json);
+    var parts2 = JObject.Parse(json2);
     string symbol_word_1 = parts["first_words"]
         .ElementAt(rand.Next(parts["first_words"].Count()))
         .ToString();
@@ -906,6 +906,9 @@ string GenerateFaction()
     // leader
     string rulerTitle = PickRandomFromArray(rulerTitles);
     string rulerPersonality = PickRandomFromArray(rulerPersonalities);
+    string rulerPopularity = PickRandomFromArray(rulerPopularities);
+    string seat = PickRandomFromArray(seats);
+    string baseName = GenerateFullName().Split(" ")[0];
 
     // classes
     List<SocialClass> selectedSocialClasses = new List<SocialClass>();
@@ -946,13 +949,14 @@ string GenerateFaction()
     // beliefs / political compass
 
     string finalString =
-        $"{factionName} are {article} {type} of {number.ToString()} members across {cities.ToString()}. "
-        + $"They use the symbol of {symbol}, and are led by {rulerPersonality} {rulerTitle}. "
+        $"{factionName} are {article} {type} of {number.ToString()} members across {cities.ToString()} cities. "
+        + $"Their base is the {baseName} {seat}. "
+        + $"They use the symbol of {symbol}, and are led by {rulerPersonality} {rulerTitle}, {rulerPopularity} the members. "
         + $"Their members are: {selectedSocialClasses[0].name} ({selectedSocialClasses[0].percentage.ToString() + "%"}), "
-        + $"{selectedSocialClasses[1].name} ({selectedSocialClasses[1].percentage.ToString() + "%"}),"
-        + $"{selectedSocialClasses[2].name} ({selectedSocialClasses[2].percentage.ToString() + "%"})."
-        + "Their goal is to [piecemeal] [verb] [adjective] [subject] [finisher] "
-        + "Their beliefs are: ";
+        + $"{selectedSocialClasses[1].name} ({selectedSocialClasses[1].percentage.ToString() + "%"}), "
+        + $"{selectedSocialClasses[2].name} ({selectedSocialClasses[2].percentage.ToString() + "%"}). ";
+    // + "Their goal is to [piecemeal] [verb] [adjective] [subject] [finisher] "
+    // + "Their beliefs are: ";
 
     return finalString;
 }
