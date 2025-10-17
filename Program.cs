@@ -954,7 +954,7 @@ string GenerateFaction()
         + "Their goal is to [piecemeal] [verb] [adjective] [subject] [finisher] "
         + "Their beliefs are: ";
 
-    return factionName;
+    return finalString;
 }
 
 // [_] Generate a nation --- name, two cities, capital, deity, monarch, factions
