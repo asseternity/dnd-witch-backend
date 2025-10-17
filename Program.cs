@@ -766,7 +766,11 @@ string GenerateFaction()
     {
         // Single-part names
         case FactionNamePatterns.Prefix:
-            factionName = $"{prefix}";
+            bool apostrophe = prefix.Substring(0, prefix.Length - 1).Contains("'");
+            if (apostrophe)
+                factionName = $"{prefix} {first_word}";
+            else
+                factionName = $"{prefix}";
             break;
         case FactionNamePatterns.FirstWord:
             factionName = $"{first_word}";
