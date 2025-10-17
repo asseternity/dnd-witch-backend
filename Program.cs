@@ -39,6 +39,8 @@ var socialClasses = JObject.Parse(File.ReadAllText("data/city/socialClasses.json
 var weather = JObject.Parse(File.ReadAllText("data/city/weather.json"));
 var economies = JObject.Parse(File.ReadAllText("data/city/economy.json"));
 
+var factionTypes = JObject.Parse(File.ReadAllText("data/faction/types.json"));
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -877,15 +879,80 @@ string GenerateFaction()
             break;
     }
 
+    // size
+    int number = rand.Next(0, 200000);
+    int cities = rand.Next(0, 50);
+
+    // symbol
+    string json2 = File.ReadAllText("data/faction/symbols.json");
+    var parts2 = JObject.Parse(json);
+    string symbol_word_1 = parts["first_words"]
+        .ElementAt(rand.Next(parts["first_words"].Count()))
+        .ToString();
+    string symbol_word_2 = parts["second_words"]
+        .ElementAt(rand.Next(parts["second_words"].Count()))
+        .ToString();
+    string symbol = $"{symbol_word_1} {symbol_word_2}";
+
+    // type
+    string type = PickRandomFromArray(factionTypes);
+    char firstChar = char.ToLower(type[0]);
+    string article = "a";
+    if ("aeiou".IndexOf(firstChar) >= 0)
+    {
+        article = "an";
+    }
+
+    // leader
+    string rulerTitle = PickRandomFromArray(rulerTitles);
+    string rulerPersonality = PickRandomFromArray(rulerPersonalities);
+
+    // classes
+    List<SocialClass> selectedSocialClasses = new List<SocialClass>();
+    for (int i = 0; i < 3; i++)
+    {
+        string socialClassName = PickRandomFromArray(socialClasses);
+        int percentage = 1;
+        if (i == 0)
+        {
+            percentage = rand.Next(1, 61);
+        }
+        else if (i == 1)
+        {
+            percentage = rand.Next(1, 31);
+        }
+        else
+        {
+            percentage =
+                100
+                - selectedSocialClasses[0].percentage
+                - selectedSocialClasses[1].percentage
+                - 15;
+            if (percentage < 0)
+            {
+                percentage =
+                    100 - selectedSocialClasses[0].percentage - selectedSocialClasses[1].percentage;
+            }
+        }
+        SocialClass newSocialClass = new SocialClass();
+        newSocialClass.name = socialClassName;
+        newSocialClass.percentage = percentage;
+        selectedSocialClasses.Add(newSocialClass);
+    }
+    selectedSocialClasses = selectedSocialClasses.OrderByDescending(sc => sc.percentage).ToList();
+
+    // goal
+
+    // beliefs / political compass
+
     string finalString =
-        "Name: The [chance adjective like Brave, Lost, Honorable] [first word] [second word] [potential suffix, like 'of Glory']\n"
-        + "Type: [criminal association / volunteering group / mercenary band / gang / trade guild / holy order / nomadic commune]\n"
-        + "Symbol: []"
-        + "Size: [1000] members across [3] cities\n"
-        + "Classes: [3 social classes with percentage]\n"
-        + "Leader: [same as city ruler]\n"
-        + "Goal: To [piecemeal] [verb] [adjective] [subject] [finisher] \n"
-        + "Political compass typing: []\n";
+        $"{factionName} are {article} {type} of {number.ToString()} members across {cities.ToString()}. "
+        + $"They use the symbol of {symbol}, and are led by {rulerPersonality} {rulerTitle}. "
+        + $"Their members are: {selectedSocialClasses[0].name} ({selectedSocialClasses[0].percentage.ToString() + "%"}), "
+        + $"{selectedSocialClasses[1].name} ({selectedSocialClasses[1].percentage.ToString() + "%"}),"
+        + $"{selectedSocialClasses[2].name} ({selectedSocialClasses[2].percentage.ToString() + "%"})."
+        + "Their goal is to [piecemeal] [verb] [adjective] [subject] [finisher] "
+        + "Their beliefs are: ";
 
     return factionName;
 }
