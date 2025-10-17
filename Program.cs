@@ -737,7 +737,8 @@ string HelpString()
         + "/char → A random adventurer appears. 🧝‍♂️\n"
         + "/char_no_blanks → No 'you choose' fields. ⚔️\n"
         + "/deity → Summon a deity of your making. ✨\n"
-        + "/city → Reveal a city with secrets. 🏰\n";
+        + "/city → Reveal a city with secrets. 🏰\n"
+        + "/faction → Create a faction for your world. 🐎\n";
 }
 
 // Generate a faction
