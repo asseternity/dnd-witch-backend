@@ -740,7 +740,7 @@ string HelpString()
         + "/city → Reveal a city with secrets. 🏰\n";
 }
 
-// [_] Generate a faction --- motto, piecemeal goal, leader, size, numbers, member jobs / social classes!
+// Generate a faction
 string GenerateFaction()
 {
     Random rand = new Random();
@@ -781,7 +781,7 @@ string GenerateFaction()
             factionName = $"{second_word}";
             break;
         case FactionNamePatterns.Suffix:
-            factionName = $"{suffix}";
+            factionName = $"{first_word} {suffix}";
             break;
         case FactionNamePatterns.GeneratedProperNoun:
             factionName = $"{generated_proper_noun}";
@@ -944,10 +944,6 @@ string GenerateFaction()
     }
     selectedSocialClasses = selectedSocialClasses.OrderByDescending(sc => sc.percentage).ToList();
 
-    // goal
-
-    // beliefs / political compass
-
     string finalString =
         $"{factionName} are {article} {type} of {number.ToString()} members across {cities.ToString()} cities. "
         + $"Their base is the {baseName} {seat}. "
@@ -955,8 +951,6 @@ string GenerateFaction()
         + $"Their members are: {selectedSocialClasses[0].name} ({selectedSocialClasses[0].percentage.ToString() + "%"}), "
         + $"{selectedSocialClasses[1].name} ({selectedSocialClasses[1].percentage.ToString() + "%"}), "
         + $"{selectedSocialClasses[2].name} ({selectedSocialClasses[2].percentage.ToString() + "%"}). ";
-    // + "Their goal is to [piecemeal] [verb] [adjective] [subject] [finisher] "
-    // + "Their beliefs are: ";
 
     return finalString;
 }
