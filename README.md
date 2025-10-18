@@ -21,4 +21,4 @@ ASP.NET Telegram bot generating dice rolls (any dice code), NPCs, factions, citi
 - Strongly-typed command routing  
 - Docker container deployment  
 
-## Link: @DnDWitchBot
+## Link: [@DnDWitchBot](https://t.me/DnDWitchBot)
