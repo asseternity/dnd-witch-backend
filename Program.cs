@@ -1232,7 +1232,7 @@ string GenerateNation()
     string finalString =
         $"<b>The {(nationName.StartsWith("The ") ? nationName.Substring(4) : nationName)}</b> is a {powerLevel} {economy} nation of {formattedPopulation} people "
         + $"{geographyCorrelation} {geographyType} of {geographyName}, flying under the banner of {symbol}.\n\n"
-        + $"It is ruled by <b>their Highness {ruler_name}</b>, a {ruler_alignment} {ruler_race} {ruler_class} "
+        + $"It is ruled by <b>their Highness {ruler_name}</b>, a {ruler_MBTI} {ruler_alignment} {ruler_race} {ruler_class} "
         + $"with ability scores ({ruler_attributes}), {ruler_popularity} the populace.\n\n"
         + $"The nation's capital is the city of <b>{capital_name}</b>, populated mostly by {socialClassName1} and ruled by mayor {mayor_name}, {mayor_personality} leader "
         + $"who is {highnessRel1}.\n\n"
