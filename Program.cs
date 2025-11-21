@@ -1225,12 +1225,12 @@ string GenerateNation()
     string domain3 = PickRandomFromArray(domainsData);
 
     string finalString =
-        $"The {nationName} is a {powerLevel} {economy} nation of {population} people "
-        + $"in the {geographyCorrelation} {geographyType} of {geographyName}, flying under the banner of {symbol}. "
+        $"The {(nationName.StartsWith("The ") ? nationName.Substring(4) : nationName)} is a {(string.IsNullOrEmpty(powerLevel) ? economy : powerLevel + " " + economy)} nation of {population} people "
+        + $"{geographyCorrelation} {geographyType} of {geographyName}, flying under the banner of {symbol}. "
         + $"It is ruled by Highness {ruler_name}, a {ruler_race} {ruler_class} aligned {ruler_alignment} "
         + $"with ability scores ({attributes[0]}, {attributes[1]}, {attributes[2]}, {attributes[3]}, {attributes[4]}, {attributes[5]}), "
-        + $"and is regarded as {ruler_popularity}. "
-        + $"The nation's capital is the city of {capital_name}, ruled by mayor {mayor_name}, a {mayor_personality} leader "
+        + $"and is regarded as {ruler_popularity} the populace. "
+        + $"The nation's capital is the city of {capital_name}, ruled by mayor {mayor_name}, {mayor_personality} leader "
         + $"who is {highnessRel1} toward the Highness, and populated mostly by {socialClassName1}. "
         + $"{factionName1}, which is {highnessRel2} toward the Highness, is {factionType1} made up largely of {socialClassName2}. "
         + $"{factionName2}, which is {highnessRel3} toward the Highness, is {factionType2} composed mostly of {socialClassName3}. "
