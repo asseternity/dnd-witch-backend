@@ -12,7 +12,7 @@ ASP.NET Telegram bot generating dice rolls (any dice code), NPCs, factions, citi
 - **DevOps:** Git, CI/CD
 
 ## Highlights
-- Commands: `/rXdY+M`, `/char`, `/city`, `/deity`, `/faction`  
+- Commands: `/rXdY+M`, `/help`, `/char`, `/city`, `/deity`, `/faction`, `/nation` 
 - Deterministic random generation  
 - Background job scheduler  
 
