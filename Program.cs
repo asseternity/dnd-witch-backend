@@ -1058,6 +1058,7 @@ string GenerateNation()
 
     // population
     int population = rand.Next(0, 50000000);
+    string formattedPopulation = population.ToString("N0");
 
     // symbol
     string json2 = File.ReadAllText("data/faction/symbols.json");
@@ -1229,7 +1230,7 @@ string GenerateNation()
     string domain3 = PickRandomFromArray(domainsData);
 
     string finalString =
-        $"<b>The {(nationName.StartsWith("The ") ? nationName.Substring(4) : nationName)}</b> is a {powerLevel} {economy} nation of {population} people "
+        $"<b>The {(nationName.StartsWith("The ") ? nationName.Substring(4) : nationName)}</b> is a {powerLevel} {economy} nation of {formattedPopulation} people "
         + $"{geographyCorrelation} {geographyType} of {geographyName}, flying under the banner of {symbol}.\n\n"
         + $"It is ruled by <b>their Highness {ruler_name}</b>, a {ruler_alignment} {ruler_race} {ruler_class} "
         + $"with ability scores ({ruler_attributes}), {ruler_popularity} the populace.\n\n"
