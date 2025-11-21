@@ -1260,7 +1260,7 @@ string GenerateNation()
         + $"{geographyCorrelation} {geographyType} of {geographyName}, with the banner of {symbol}.\n\n"
         + $"The ruler is <b>their Highness {ruler_name}</b>, a {ruler_sex} {ruler_MBTI} {ruler_alignment} {ruler_race} {ruler_class} "
         + $"with ability scores ({ruler_attributes}), {ruler_popularity} the populace.\n\n"
-        + $"The capital is the city of <b>{capital_name}</b>, populated mostly by {socialClassName1} and ruled by mayor {mayor_name}, a {mayor_sex} {mayor_race} {mayor_class} and {mayor_personality} leader "
+        + $"The capital is the city of <b>{capital_name}</b>, populated mostly by {socialClassName1} and ruled by <b>mayor {mayor_name}</b>, a {mayor_sex} {mayor_race} {mayor_class} and {mayor_personality} leader "
         + $"who is {highnessRel1}.\n\n"
         + $"The nation is roamed by <b>{factionName1}</b>, which is {factionType1} made up largely of {socialClassName2}. They are {highnessRel2}.\n\n"
         + $"<b>{factionName2}</b>, {factionType2} composed mostly of {socialClassName3}, is {highnessRel3}. "
