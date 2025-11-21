@@ -981,40 +981,60 @@ string GenerateNation()
             else
                 nationName = $"{prefix}";
             break;
+
         case NationNamePatterns.Suffix:
             nationName = $"{noun} {suffix}";
             break;
+
         case NationNamePatterns.Noun:
             nationName = $"{noun}";
             break;
+
         case NationNamePatterns.GeneratedProperNoun:
             nationName = $"{generated_proper_noun}";
             break;
 
         // Two-part combinations
         case NationNamePatterns.Prefix_Noun:
+            nationName = $"{prefix} {noun}";
             break;
+
         case NationNamePatterns.Prefix_GeneratedProperNoun:
+            nationName = $"{prefix} {generated_proper_noun}";
             break;
+
         case NationNamePatterns.Noun_Suffix:
+            nationName = $"{noun} {suffix}";
             break;
+
         case NationNamePatterns.GeneratedProperNoun_Suffix:
+            nationName = $"{generated_proper_noun} {suffix}";
             break;
 
         // Three-part combinations
         case NationNamePatterns.Noun_Of_GeneratedProperNoun:
+            nationName = $"{noun} of {generated_proper_noun}";
             break;
+
         case NationNamePatterns.Prefix_Noun_Suffix:
+            nationName = $"{prefix} {noun} {suffix}";
             break;
+
         case NationNamePatterns.Prefix_GeneratedProperNoun_Suffix:
+            nationName = $"{prefix} {generated_proper_noun} {suffix}";
             break;
 
         // Four-part combinations
         case NationNamePatterns.Prefix_Noun_Of_GeneratedProperNoun:
+            nationName = $"{prefix} {noun} of {generated_proper_noun}";
             break;
+
         case NationNamePatterns.Noun_Of_GeneratedProperNoun_Suffix:
+            nationName = $"{noun} of {generated_proper_noun} {suffix}";
             break;
+
         case NationNamePatterns.Prefix_Noun_Of_GeneratedProperNoun_Suffix:
+            nationName = $"{prefix} {noun} of {generated_proper_noun} {suffix}";
             break;
 
         // Fallback
