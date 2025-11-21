@@ -1,5 +1,5 @@
 class SocialClass
 {
-    public string name;
-    public int percentage;
+    public string name { get; set; } = "";
+    public int percentage { get; set; }
 }

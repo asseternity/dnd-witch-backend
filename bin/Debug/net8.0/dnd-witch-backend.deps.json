@@ -10,7 +10,8 @@
         "dependencies": {
           "Microsoft.AspNetCore.OpenApi": "8.0.2",
           "Newtonsoft.Json": "13.0.4",
-          "Swashbuckle.AspNetCore": "6.4.0"
+          "Swashbuckle.AspNetCore": "6.4.0",
+          "Telegram.Bot": "22.7.2"
         },
         "runtime": {
           "dnd-witch-backend.dll": {}
@@ -27,7 +28,6 @@
           }
         }
       },
-      "Microsoft.Extensions.ApiDescription.Server/6.0.5": {},
       "Microsoft.OpenApi/1.4.3": {
         "runtime": {
           "lib/netstandard2.0/Microsoft.OpenApi.dll": {
@@ -46,7 +46,6 @@
       },
       "Swashbuckle.AspNetCore/6.4.0": {
         "dependencies": {
-          "Microsoft.Extensions.ApiDescription.Server": "6.0.5",
           "Swashbuckle.AspNetCore.Swagger": "6.4.0",
           "Swashbuckle.AspNetCore.SwaggerGen": "6.4.0",
           "Swashbuckle.AspNetCore.SwaggerUI": "6.4.0"
@@ -81,6 +80,14 @@
             "fileVersion": "6.4.0.0"
           }
         }
+      },
+      "Telegram.Bot/22.7.2": {
+        "runtime": {
+          "lib/net6.0/Telegram.Bot.dll": {
+            "assemblyVersion": "22.7.2.0",
+            "fileVersion": "22.7.2.0"
+          }
+        }
       }
     }
   },
@@ -96,13 +103,6 @@
       "sha512": "sha512-59xQBsH+2at3+rrLazCNbaLhS1gmMY2fT1rSxa116EQ2oCbdULerytaYtr0h5iew+BVwJZNsWgvU3fOpt74DCA==",
       "path": "microsoft.aspnetcore.openapi/8.0.2",
       "hashPath": "microsoft.aspnetcore.openapi.8.0.2.nupkg.sha512"
-    },
-    "Microsoft.Extensions.ApiDescription.Server/6.0.5": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-Ckb5EDBUNJdFWyajfXzUIMRkhf52fHZOQuuZg/oiu8y7zDCVwD0iHhew6MnThjHmevanpxL3f5ci2TtHQEN6bw==",
-      "path": "microsoft.extensions.apidescription.server/6.0.5",
-      "hashPath": "microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512"
     },
     "Microsoft.OpenApi/1.4.3": {
       "type": "package",
@@ -145,6 +145,13 @@
       "sha512": "sha512-1Hh3atb3pi8c+v7n4/3N80Jj8RvLOXgWxzix6w3OZhB7zBGRwsy7FWr4e3hwgPweSBpwfElqj4V4nkjYabH9nQ==",
       "path": "swashbuckle.aspnetcore.swaggerui/6.4.0",
       "hashPath": "swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512"
+    },
+    "Telegram.Bot/22.7.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ln3Cfyt6YCP6DezdrJ9sqU1ywTGVwog7e8ojCrLfHLLYMt26q1I7NzhR0b0QskOOMVLl38f42sjfjB6He/l3mw==",
+      "path": "telegram.bot/22.7.2",
+      "hashPath": "telegram.bot.22.7.2.nupkg.sha512"
     }
   }
 }

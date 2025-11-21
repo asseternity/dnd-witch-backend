@@ -4,7 +4,7 @@ public enum FactionNameParts
     suffix,
     first_word,
     second_word,
-    generated_proper_noun
+    generated_proper_noun,
 }
 
 public enum FactionNamePatterns
@@ -48,5 +48,5 @@ public enum FactionNamePatterns
     FirstWord_SecondWord_GeneratedProperNoun_Suffix,
 
     // All five parts
-    Prefix_FirstWord_SecondWord_GeneratedProperNoun_Suffix
+    Prefix_FirstWord_SecondWord_GeneratedProperNoun_Suffix,
 }

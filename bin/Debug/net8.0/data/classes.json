@@ -1,11 +1,6 @@
 {
   "classes": {
-    "Artificer": [
-      "Alchemist",
-      "Armorer",
-      "Artillerist",
-      "Battle Smith"
-    ],
+    "Artificer": ["Alchemist", "Armorer", "Artillerist", "Battle Smith"],
     "Barbarian": [
       "Path of the Ancestral Guardian",
       "Path of the Battlerager",

@@ -425,7 +425,7 @@ string GenerateCharacter(bool LeordisChar, bool makeYouChooses)
         "Umbra Aligned",
         "Singhana Naya",
         "Reyes Sin Lugar (old-bloods)",
-        "Reyes Sin Lugar (new-bloods)"
+        "Reyes Sin Lugar (new-bloods)",
     ];
     string nation = nations[rnd.Next(0, nations.Length)];
 
@@ -600,7 +600,7 @@ string GenerateCity()
         "a mid-sized",
         "a regionally important",
         "a key strategic",
-        "a cozy"
+        "a cozy",
     };
     int random1 = rnd.Next(0, sizes.Length); // corrected to avoid out-of-bounds
     string size = sizes[random1];
@@ -956,7 +956,149 @@ string GenerateFaction()
     return finalString;
 }
 
-// [_] Generate a nation --- name, two cities, capital, deity, monarch, factions
+// Generate a nation --- name, two cities, capital, deity, monarch, factions
+string GenerateNation()
+{
+    Random rand = new Random();
+
+    // name
+    string json = File.ReadAllText("data/nation/name_parts.json");
+    var parts = JObject.Parse(json);
+    string generated_proper_noun = GenerateFullName().Split(" ")[0];
+    string prefix = parts["prefixes"].ElementAt(rand.Next(parts["prefixes"].Count())).ToString();
+    string noun = parts["nouns"].ElementAt(rand.Next(parts["nouns"].Count())).ToString();
+    string suffix = parts["suffixes"].ElementAt(rand.Next(parts["suffixes"].Count())).ToString();
+    var patterns = Enum.GetValues(typeof(NationNamePatterns));
+    NationNamePatterns pattern = (NationNamePatterns)patterns.GetValue(rand.Next(patterns.Length));
+    string nationName = "";
+    switch (pattern)
+    {
+        // Single-part names
+        case NationNamePatterns.Prefix:
+            bool apostrophe = prefix.Substring(0, prefix.Length - 1).Contains("'");
+            if (apostrophe)
+                nationName = $"{prefix} {noun}";
+            else
+                nationName = $"{prefix}";
+            break;
+        case NationNamePatterns.Suffix:
+            nationName = $"{noun} {suffix}";
+            break;
+        case NationNamePatterns.Noun:
+            nationName = $"{noun}";
+            break;
+        case NationNamePatterns.GeneratedProperNoun:
+            nationName = $"{generated_proper_noun}";
+            break;
+
+        // Two-part combinations
+        case NationNamePatterns.Prefix_Noun:
+            break;
+        case NationNamePatterns.Prefix_GeneratedProperNoun:
+            break;
+        case NationNamePatterns.Noun_Suffix:
+            break;
+        case NationNamePatterns.GeneratedProperNoun_Suffix:
+            break;
+
+        // Three-part combinations
+        case NationNamePatterns.Noun_Of_GeneratedProperNoun:
+            break;
+        case NationNamePatterns.Prefix_Noun_Suffix:
+            break;
+        case NationNamePatterns.Prefix_GeneratedProperNoun_Suffix:
+            break;
+
+        // Four-part combinations
+        case NationNamePatterns.Prefix_Noun_Of_GeneratedProperNoun:
+            break;
+        case NationNamePatterns.Noun_Of_GeneratedProperNoun_Suffix:
+            break;
+        case NationNamePatterns.Prefix_Noun_Of_GeneratedProperNoun_Suffix:
+            break;
+
+        // Fallback
+        default:
+            nationName = $"{prefix} {noun}";
+            break;
+    }
+
+    // size
+    int population = rand.Next(0, 50000000);
+    int cities = rand.Next(0, 50);
+
+    // symbol
+    string json2 = File.ReadAllText("data/faction/symbols.json");
+    var parts2 = JObject.Parse(json2);
+    string symbol_word_1 = parts2["first_words"]
+        .ElementAt(rand.Next(parts2["first_words"].Count()))
+        .ToString();
+    string symbol_word_2 = parts2["second_words"]
+        .ElementAt(rand.Next(parts2["second_words"].Count()))
+        .ToString();
+    string symbol = $"{symbol_word_1} {symbol_word_2}";
+
+    // capital, main faction
+    string capital = GenerateCity();
+    string main_faction = GenerateFaction();
+
+    // leader
+    string rulerTitle = PickRandomFromArray(rulerTitles);
+    string rulerPersonality = PickRandomFromArray(rulerPersonalities);
+    string rulerPopularity = PickRandomFromArray(rulerPopularities);
+    string seat = PickRandomFromArray(seats);
+    string baseName = GenerateFullName().Split(" ")[0];
+
+    // classes
+    List<SocialClass> selectedSocialClasses = new List<SocialClass>();
+    for (int i = 0; i < 3; i++)
+    {
+        string socialClassName = PickRandomFromArray(socialClasses);
+        int percentage = 1;
+        if (i == 0)
+        {
+            percentage = rand.Next(1, 61);
+        }
+        else if (i == 1)
+        {
+            percentage = rand.Next(1, 31);
+        }
+        else
+        {
+            percentage =
+                100
+                - selectedSocialClasses[0].percentage
+                - selectedSocialClasses[1].percentage
+                - 15;
+            if (percentage < 0)
+            {
+                percentage =
+                    100 - selectedSocialClasses[0].percentage - selectedSocialClasses[1].percentage;
+            }
+        }
+        SocialClass newSocialClass = new SocialClass();
+        newSocialClass.name = socialClassName;
+        newSocialClass.percentage = percentage;
+        selectedSocialClasses.Add(newSocialClass);
+    }
+    selectedSocialClasses = selectedSocialClasses.OrderByDescending(sc => sc.percentage).ToList();
+
+    string finalString =
+        $"🌍 Nation: {nationName}\n"
+        + $"👥 Population: {population}\n"
+        + $"🏙️ Number of Cities: {cities}\n"
+        + $"⚜️ Symbol: {symbol}\n\n"
+        + $"🏰 Capital:\n{capital}\n\n"
+        + $"🛡️ Main Faction:\n{main_faction}\n\n"
+        + $"👑 Ruler: {rulerPersonality} {rulerTitle}, {rulerPopularity} the people\n"
+        + $"📍 Seat of Power: The {baseName} {seat}\n\n"
+        + $"📊 Social Classes:\n"
+        + $"{selectedSocialClasses[0].name} ({selectedSocialClasses[0].percentage}%)\n"
+        + $"{selectedSocialClasses[1].name} ({selectedSocialClasses[1].percentage}%)\n"
+        + $"{selectedSocialClasses[2].name} ({selectedSocialClasses[2].percentage}%)";
+
+    return finalString;
+}
 
 // GET routes
 app.MapGet(
@@ -985,7 +1127,7 @@ var cts = new CancellationTokenSource();
 // Receiver options
 var receiverOptions = new Telegram.Bot.Polling.ReceiverOptions
 {
-    AllowedUpdates = { } // receive all update types
+    AllowedUpdates = { }, // receive all update types
 };
 
 // Start receiving
@@ -1059,6 +1201,10 @@ botClient.StartReceiving(
                     else if (incoming.Equals("/faction", StringComparison.OrdinalIgnoreCase))
                     {
                         response = GenerateFaction();
+                    }
+                    else if (incoming.Equals("/nation", StringComparison.OrdinalIgnoreCase))
+                    {
+                        response = GenerateNation();
                     }
                 }
 

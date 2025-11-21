@@ -19,7 +19,7 @@ public static class MBTIGenerator
             ("ISTP", "Virtuoso"),
             ("ISFP", "Adventurer"),
             ("ESTP", "Entrepreneur"),
-            ("ESFP", "Entertainer")
+            ("ESFP", "Entertainer"),
         };
 
         var rng = new Random();

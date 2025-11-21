@@ -40,6 +40,6 @@ public static class RaceStats
         { "Minotaur", (210, 250, 120, 180) },
         { "Orc", (160, 200, 70, 110) },
         { "Yuan-Ti", (150, 180, 45, 90) },
-        { "Warforged", (180, 210, 80, 150) }
+        { "Warforged", (180, 210, 80, 150) },
     };
 }
