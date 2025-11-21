@@ -742,7 +742,7 @@ string HelpString()
 }
 
 // Generate a faction
-string GenerateFaction()
+string GenerateFaction(bool justName)
 {
     Random rand = new Random();
 
@@ -953,6 +953,11 @@ string GenerateFaction()
         + $"{selectedSocialClasses[1].name} ({selectedSocialClasses[1].percentage.ToString() + "%"}), "
         + $"{selectedSocialClasses[2].name} ({selectedSocialClasses[2].percentage.ToString() + "%"}). ";
 
+    if (justName)
+    {
+        finalString = factionName;
+    }
+
     return finalString;
 }
 
@@ -1051,9 +1056,8 @@ string GenerateNation()
             break;
     }
 
-    // size
+    // population
     int population = rand.Next(0, 50000000);
-    int cities = rand.Next(0, 50);
 
     // symbol
     string json2 = File.ReadAllText("data/faction/symbols.json");
@@ -1066,64 +1070,173 @@ string GenerateNation()
         .ToString();
     string symbol = $"{symbol_word_1} {symbol_word_2}";
 
-    // capital, main faction
-    string capital = GenerateCity();
-    string main_faction = GenerateFaction();
+    // power level
+    string powerLevel = "";
 
-    // leader
-    string rulerTitle = PickRandomFromArray(rulerTitles);
-    string rulerPersonality = PickRandomFromArray(rulerPersonalities);
-    string rulerPopularity = PickRandomFromArray(rulerPopularities);
-    string seat = PickRandomFromArray(seats);
-    string baseName = GenerateFullName().Split(" ")[0];
-
-    // classes
-    List<SocialClass> selectedSocialClasses = new List<SocialClass>();
-    for (int i = 0; i < 3; i++)
+    if (population < 10000)
     {
-        string socialClassName = PickRandomFromArray(socialClasses);
-        int percentage = 1;
-        if (i == 0)
-        {
-            percentage = rand.Next(1, 61);
-        }
-        else if (i == 1)
-        {
-            percentage = rand.Next(1, 31);
-        }
-        else
-        {
-            percentage =
-                100
-                - selectedSocialClasses[0].percentage
-                - selectedSocialClasses[1].percentage
-                - 15;
-            if (percentage < 0)
-            {
-                percentage =
-                    100 - selectedSocialClasses[0].percentage - selectedSocialClasses[1].percentage;
-            }
-        }
-        SocialClass newSocialClass = new SocialClass();
-        newSocialClass.name = socialClassName;
-        newSocialClass.percentage = percentage;
-        selectedSocialClasses.Add(newSocialClass);
+        powerLevel = "puny";
     }
-    selectedSocialClasses = selectedSocialClasses.OrderByDescending(sc => sc.percentage).ToList();
+    else if (population < 50000)
+    {
+        powerLevel = "minor";
+    }
+    else if (population < 100000)
+    {
+        powerLevel = "modest";
+    }
+    else if (population < 200000)
+    {
+        powerLevel = "established";
+    }
+    else if (population < 500000)
+    {
+        powerLevel = "notable";
+    }
+    else if (population < 1000000)
+    {
+        powerLevel = "formidable";
+    }
+    else if (population < 1500000)
+    {
+        powerLevel = "major";
+    }
+    else if (population < 2000000)
+    {
+        powerLevel = "dominant";
+    }
+    else if (population < 2500000)
+    {
+        powerLevel = "mythic";
+    }
+    else if (population < 3000000)
+    {
+        powerLevel = "titanic";
+    }
+    else if (population < 3500000)
+    {
+        powerLevel = "cataclysmic";
+    }
+    else if (population < 4000000)
+    {
+        powerLevel = "world-bending";
+    }
+    else if (population < 4500000)
+    {
+        powerLevel = "world-shaping";
+    }
+
+    // main economy
+    string economy = PickRandomFromArray(economies);
+
+    // geography
+    string geographyCorrelation = PickRandomFromArray(geographyCorrelations);
+    string geographyName = GenerateFullName().Split(" ")[0];
+    string geographyType = PickRandomFromArray(geographyTypes);
+
+    // ruler race
+    string ruler_race = PickRandomUpperAndInner(racesData);
+
+    // ruler class
+    string ruler_class = PickRandomUpperAndInner(classData);
+
+    // ruler alignment
+    string ruler_alignment = PickRandomFromArray(alignmentsData);
+
+    // ruler MBTI
+    string ruler_MBTI = MBTIGenerator.GetRandomMBTI();
+
+    // ruler name
+    var ruler_name = GenerateFullName();
+
+    // ruler_reputation
+    string ruler_popularity = PickRandomFromArray(rulerPopularities);
+
+    // ruler ability scores
+    var attributes = ProduceFunAttributeArray();
+
+    // capital name
+    string capital_suffix = PickRandomFromArray(cityNameSuffixes);
+    string capital_prefix = PickRandomFromArray(cityNamePrefixes);
+    string capital_name = GenerateFullName().Split(" ")[0];
+    int chance = rand.Next(0, 100);
+    if (chance < 50)
+    {
+        capital_name = capital_name + capital_suffix;
+    }
+    if (chance < 30)
+    {
+        capital_name = capital_prefix + " " + capital_name;
+    }
+
+    // capital mayor name
+    var mayor_name = GenerateFullName();
+
+    // capital mayor trait
+    string mayor_personality = PickRandomFromArray(rulerPersonalities);
+
+    // three social classes
+    string socialClassName1 = PickRandomFromArray(socialClasses);
+    string socialClassName2 = PickRandomFromArray(socialClasses);
+    string socialClassName3 = PickRandomFromArray(socialClasses);
+
+    // two faction names
+    string factionName1 = GenerateFaction(true);
+    string factionName2 = GenerateFaction(true);
+
+    // two faction types
+    string type1 = PickRandomFromArray(factionTypes);
+    char firstChar1 = char.ToLower(type1[0]);
+    string article1 = "a";
+    if ("aeiou".IndexOf(firstChar1) >= 0)
+    {
+        article1 = "an";
+    }
+    string factionType1 = $"{article1} {type1}";
+    string type2 = PickRandomFromArray(factionTypes);
+    char firstChar2 = char.ToLower(type2[0]);
+    string article2 = "a";
+    if ("aeiou".IndexOf(firstChar2) >= 0)
+    {
+        article2 = "an";
+    }
+    string factionType2 = $"{article2} {type2}";
+
+    // three relationships with Highness
+    string highnessRel1 = Relationships.PickRandomFromArray(
+        Relationships.relationshipsWithHighness
+    );
+    string highnessRel2 = Relationships.PickRandomFromArray(
+        Relationships.relationshipsWithHighness
+    );
+    string highnessRel3 = Relationships.PickRandomFromArray(
+        Relationships.relationshipsWithHighness
+    );
+
+    // one relationship between factions
+    string factionRel = Relationships.PickRandomFromArray(Relationships.factionRelationships);
+
+    // deity name and three virtues
+    string deity_name = GenerateFullName().Split(" ")[0];
+    string deity_epithet = PickRandomFromArray(epithetsData);
+    var deity_motto = GenerateMotto();
+    string domain1 = PickRandomFromArray(domainsData);
+    string domain2 = PickRandomFromArray(domainsData);
+    string domain3 = PickRandomFromArray(domainsData);
 
     string finalString =
-        $"🌍 Nation: {nationName}\n"
-        + $"👥 Population: {population}\n"
-        + $"🏙️ Number of Cities: {cities}\n"
-        + $"⚜️ Symbol: {symbol}\n\n"
-        + $"🏰 Capital:\n{capital}\n\n"
-        + $"🛡️ Main Faction:\n{main_faction}\n\n"
-        + $"👑 Ruler: {rulerPersonality} {rulerTitle}, {rulerPopularity} the people\n"
-        + $"📍 Seat of Power: The {baseName} {seat}\n\n"
-        + $"📊 Social Classes:\n"
-        + $"{selectedSocialClasses[0].name} ({selectedSocialClasses[0].percentage}%)\n"
-        + $"{selectedSocialClasses[1].name} ({selectedSocialClasses[1].percentage}%)\n"
-        + $"{selectedSocialClasses[2].name} ({selectedSocialClasses[2].percentage}%)";
+        $"The {nationName} is a {powerLevel} {economy} nation of {population} people "
+        + $"in the {geographyCorrelation} {geographyType} of {geographyName}, flying under the banner of {symbol}. "
+        + $"It is ruled by Highness {ruler_name}, a {ruler_race} {ruler_class} aligned {ruler_alignment} "
+        + $"with ability scores ({attributes[0]}, {attributes[1]}, {attributes[2]}, {attributes[3]}, {attributes[4]}, {attributes[5]}), "
+        + $"and is regarded as {ruler_popularity}. "
+        + $"The nation's capital is the city of {capital_name}, ruled by mayor {mayor_name}, a {mayor_personality} leader "
+        + $"who is {highnessRel1} toward the Highness, and populated mostly by {socialClassName1}. "
+        + $"{factionName1}, which is {highnessRel2} toward the Highness, is {factionType1} made up largely of {socialClassName2}. "
+        + $"{factionName2}, which is {highnessRel3} toward the Highness, is {factionType2} composed mostly of {socialClassName3}. "
+        + $"These factions are currently {factionRel} with one another. "
+        + $"The nation worships {deity_name} {deity_epithet}, deity of {domain1}, {domain2}, and {domain3}, "
+        + $"whose motto is \"{deity_motto}\".";
 
     return finalString;
 }
@@ -1228,7 +1341,7 @@ botClient.StartReceiving(
                     }
                     else if (incoming.Equals("/faction", StringComparison.OrdinalIgnoreCase))
                     {
-                        response = GenerateFaction();
+                        response = GenerateFaction(false);
                     }
                     else if (incoming.Equals("/nation", StringComparison.OrdinalIgnoreCase))
                     {
