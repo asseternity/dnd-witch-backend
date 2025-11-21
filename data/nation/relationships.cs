@@ -2,16 +2,16 @@ class Relationships
 {
     public static readonly string[] relationshipsWithHighness = new[]
     {
-        "loyal to the throne",
+        "loyal to the throne of the Highness",
         "barely tolerated by the Highness",
-        "secretly plotting against the crown",
-        "in open dispute with royal policy",
-        "publicly devoted but privately resentful",
+        "secretly plotting against the Highness",
+        "in open dispute with the Highness' policy",
+        "publicly devoted to the Highness but privately resentful",
         "bound to the Highness by old oaths",
-        "fearful of displeasing the royal court",
-        "manipulated into obedience",
-        "treated as a favored ally",
-        "trusted more than they probably should be",
+        "fearful of displeasing the Highness",
+        "manipulated into obedience by the Highness",
+        "treated as a favored ally of the Highness",
+        "trusted more by the Highness than they probably should be",
     };
 
     public static readonly string[] factionRelationships = new[]

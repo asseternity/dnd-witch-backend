@@ -1153,7 +1153,7 @@ string GenerateNation()
     string ruler_popularity = PickRandomFromArray(rulerPopularities);
 
     // ruler ability scores
-    var attributes = ProduceFunAttributeArray();
+    var ruler_attributes = ProduceFunAttributeArray();
 
     // capital name
     string capital_suffix = PickRandomFromArray(cityNameSuffixes);
@@ -1225,18 +1225,17 @@ string GenerateNation()
     string domain3 = PickRandomFromArray(domainsData);
 
     string finalString =
-        $"The {(nationName.StartsWith("The ") ? nationName.Substring(4) : nationName)} is a {(string.IsNullOrEmpty(powerLevel) ? economy : powerLevel + " " + economy)} nation of {population} people "
-        + $"{geographyCorrelation} {geographyType} of {geographyName}, flying under the banner of {symbol}. "
-        + $"It is ruled by Highness {ruler_name}, a {ruler_race} {ruler_class} aligned {ruler_alignment} "
-        + $"with ability scores ({attributes[0]}, {attributes[1]}, {attributes[2]}, {attributes[3]}, {attributes[4]}, {attributes[5]}), "
-        + $"and is regarded as {ruler_popularity} the populace. "
-        + $"The nation's capital is the city of {capital_name}, ruled by mayor {mayor_name}, {mayor_personality} leader "
-        + $"who is {highnessRel1} toward the Highness, and populated mostly by {socialClassName1}. "
-        + $"{factionName1}, which is {highnessRel2} toward the Highness, is {factionType1} made up largely of {socialClassName2}. "
-        + $"{factionName2}, which is {highnessRel3} toward the Highness, is {factionType2} composed mostly of {socialClassName3}. "
-        + $"These factions are currently {factionRel} with one another. "
-        + $"The nation worships {deity_name} {deity_epithet}, deity of {domain1}, {domain2}, and {domain3}, "
-        + $"whose motto is \"{deity_motto}\".";
+        $"**The {(nationName.StartsWith("The ") ? nationName.Substring(4) : nationName)}** is a {(string.IsNullOrEmpty(powerLevel) ? economy : powerLevel + " " + economy)} nation of {population} people "
+        + $"{geographyCorrelation} {geographyType} of {geographyName}, flying under the banner of {symbol}.\n\n"
+        + $"It is ruled by **their Highness {ruler_name}**, a {ruler_alignment} {ruler_race} {ruler_class} "
+        + $"with ability scores ({ruler_attributes}), {ruler_popularity} the populace.\n\n"
+        + $"The nation's capital is the city of **{capital_name}** populated mostly by {socialClassName1} and ruled by mayor {mayor_name}, {mayor_personality} leader "
+        + $"who is {highnessRel1}.\n\n"
+        + $"The nation is roamed by **{factionName1}**, which is a {factionType1} made up largely of {socialClassName2}. They are {highnessRel2}."
+        + $"{factionName2}, a {factionType2} composed mostly of {socialClassName3}, is {highnessRel3}. "
+        + $"These factions are currently {factionRel} with one another.\n\n"
+        + $"The nation worships **{deity_name}** {deity_epithet}, deity of {domain1}, {domain2}, and {domain3}, "
+        + $"whose motto is \"{deity_motto}\"!";
 
     return finalString;
 }
