@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("dnd-witch-backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+76b682f644bbefe87607f3bea164793256f6f709")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+83ccddce306efaf7993eb543e540883f092070f4")]
 [assembly: System.Reflection.AssemblyProductAttribute("dnd-witch-backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("dnd-witch-backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

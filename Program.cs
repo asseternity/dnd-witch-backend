@@ -738,7 +738,8 @@ string HelpString()
         + "/char_no_blanks → No 'you choose' fields. ⚔️\n"
         + "/deity → Summon a deity of your making. ✨\n"
         + "/city → Reveal a city with secrets. 🏰\n"
-        + "/faction → Create a faction for your world. 🐎\n";
+        + "/faction → Create a faction for your world. 🐎\n"
+        + "/nation → Conjure an entire nation, its ruler, factions, and divine patron. 🌍\n";
 }
 
 // Generate a faction
