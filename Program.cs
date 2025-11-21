@@ -977,9 +977,17 @@ string GenerateNation()
         case NationNamePatterns.Prefix:
             bool apostrophe = prefix.Substring(0, prefix.Length - 1).Contains("'");
             if (apostrophe)
+            {
                 nationName = $"{prefix} {noun}";
+            }
             else
-                nationName = $"{prefix}";
+            {
+                if (prefix.EndsWith("'"))
+                    nationName = $"{prefix} {noun}";
+                else
+                    nationName = $"{prefix}";
+                break;
+            }
             break;
 
         case NationNamePatterns.Suffix:
