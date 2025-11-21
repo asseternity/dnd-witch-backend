@@ -1073,57 +1073,61 @@ string GenerateNation()
     // power level
     string powerLevel = "";
 
-    if (population < 10000)
+    if (population < 100000)
     {
         powerLevel = "puny";
     }
-    else if (population < 50000)
+    else if (population < 500000)
     {
         powerLevel = "minor";
     }
-    else if (population < 100000)
+    else if (population < 1000000)
     {
         powerLevel = "modest";
     }
-    else if (population < 200000)
+    else if (population < 2000000)
     {
         powerLevel = "established";
     }
-    else if (population < 500000)
+    else if (population < 5000000)
     {
         powerLevel = "notable";
     }
-    else if (population < 1000000)
+    else if (population < 10000000)
     {
         powerLevel = "formidable";
     }
-    else if (population < 1500000)
+    else if (population < 15000000)
     {
         powerLevel = "major";
     }
-    else if (population < 2000000)
+    else if (population < 20000000)
     {
         powerLevel = "dominant";
     }
-    else if (population < 2500000)
+    else if (population < 25000000)
     {
         powerLevel = "mythic";
     }
-    else if (population < 3000000)
+    else if (population < 30000000)
     {
         powerLevel = "titanic";
     }
-    else if (population < 3500000)
+    else if (population < 35000000)
     {
         powerLevel = "cataclysmic";
     }
-    else if (population < 4000000)
+    else if (population < 40000000)
     {
         powerLevel = "world-bending";
     }
-    else if (population < 4500000)
+    else if (population < 45000000)
     {
         powerLevel = "world-shaping";
+    }
+    else
+    {
+        powerLevel = "literally unstoppable";
     }
 
     // main economy
