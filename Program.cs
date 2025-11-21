@@ -1237,7 +1237,7 @@ string GenerateNation()
         + $"The nation's capital is the city of <b>{capital_name}</b>, populated mostly by {socialClassName1} and ruled by mayor {mayor_name}, {mayor_personality} leader "
         + $"who is {highnessRel1}.\n\n"
         + $"The nation is roamed by <b>{factionName1}</b>, which is a {factionType1} made up largely of {socialClassName2}. They are {highnessRel2}.\n\n"
-        + $"{factionName2}, a {factionType2} composed mostly of {socialClassName3}, is {highnessRel3}. "
+        + $"<b>{factionName2}</b>, a {factionType2} composed mostly of {socialClassName3}, is {highnessRel3}. "
         + $"These factions are currently {factionRel} with one another.\n\n"
         + $"The nation worships <b>{deity_name}, {deity_epithet}</b>, deity of {domain1}, {domain2}, and {domain3}, "
         + $"whose motto is \"{deity_motto}\"!";
