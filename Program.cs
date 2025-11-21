@@ -1254,13 +1254,14 @@ string GenerateNation()
     // mayor data
     string mayor_race = PickRandomUpperAndInner(racesData);
     string mayor_class = PickRandomUpperAndInner(classData);
+    var mayor_attributes = ProduceFunAttributeArray();
 
     string finalString =
         $"<b>The {(nationName.StartsWith("The ") ? nationName.Substring(4) : nationName)}</b> is a {powerLevel} {economy} nation of {formattedPopulation} people "
         + $"{geographyCorrelation} {geographyType} of {geographyName}, with the banner of {symbol}.\n\n"
         + $"The ruler is <b>their Highness {ruler_name}</b>, a {ruler_sex} {ruler_MBTI} {ruler_alignment} {ruler_race} {ruler_class} "
         + $"with ability scores ({ruler_attributes}), {ruler_popularity} the populace.\n\n"
-        + $"The capital is the city of <b>{capital_name}</b>, populated mostly by {socialClassName1} and ruled by <b>mayor {mayor_name}</b>, a {mayor_sex} {mayor_race} {mayor_class} and {mayor_personality} leader "
+        + $"The capital is the city of <b>{capital_name}</b>, populated mostly by {socialClassName1} and ruled by <b>mayor {mayor_name}</b>, a {mayor_sex} {mayor_race} {mayor_class} and {mayor_personality} leader (attributes: {mayor_attributes}) "
         + $"who is {highnessRel1}.\n\n"
         + $"The nation is roamed by <b>{factionName1}</b>, which is {factionType1} made up largely of {socialClassName2}. They are {highnessRel2}.\n\n"
         + $"<b>{factionName2}</b>, {factionType2} composed mostly of {socialClassName3}, is {highnessRel3}. "
