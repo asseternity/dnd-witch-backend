@@ -1229,12 +1229,38 @@ string GenerateNation()
     string domain2 = PickRandomFromArray(domainsData);
     string domain3 = PickRandomFromArray(domainsData);
 
+    // genders
+    string ruler_sex = "female";
+    int ruler_chance = rand.Next(1, 101);
+    if (ruler_chance < 40)
+    {
+        ruler_sex = "male";
+    }
+    else if (ruler_chance < 60)
+    {
+        ruler_sex = "non-Binary";
+    }
+    string mayor_sex = "female";
+    int mayor_chance = rand.Next(1, 101);
+    if (mayor_chance < 40)
+    {
+        mayor_sex = "male";
+    }
+    else if (mayor_chance < 60)
+    {
+        mayor_sex = "non-Binary";
+    }
+
+    // mayor data
+    string mayor_race = PickRandomUpperAndInner(racesData);
+    string mayor_class = PickRandomUpperAndInner(classData);
+
     string finalString =
         $"<b>The {(nationName.StartsWith("The ") ? nationName.Substring(4) : nationName)}</b> is a {powerLevel} {economy} nation of {formattedPopulation} people "
-        + $"{geographyCorrelation} {geographyType} of {geographyName}, flying under the banner of {symbol}.\n\n"
-        + $"It is ruled by <b>their Highness {ruler_name}</b>, a {ruler_MBTI} {ruler_alignment} {ruler_race} {ruler_class} "
+        + $"{geographyCorrelation} {geographyType} of {geographyName}, with the banner of {symbol}.\n\n"
+        + $"The ruler is <b>their Highness {ruler_name}</b>, a {ruler_sex} {ruler_MBTI} {ruler_alignment} {ruler_race} {ruler_class} "
         + $"with ability scores ({ruler_attributes}), {ruler_popularity} the populace.\n\n"
-        + $"The nation's capital is the city of <b>{capital_name}</b>, populated mostly by {socialClassName1} and ruled by mayor {mayor_name}, {mayor_personality} leader "
+        + $"The capital is the city of <b>{capital_name}</b>, populated mostly by {socialClassName1} and ruled by mayor {mayor_name}, a {mayor_sex} {mayor_race} {mayor_class} and {mayor_personality} leader "
         + $"who is {highnessRel1}.\n\n"
         + $"The nation is roamed by <b>{factionName1}</b>, which is {factionType1} made up largely of {socialClassName2}. They are {highnessRel2}.\n\n"
         + $"<b>{factionName2}</b>, {factionType2} composed mostly of {socialClassName3}, is {highnessRel3}. "
